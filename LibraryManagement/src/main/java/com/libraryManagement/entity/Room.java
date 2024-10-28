@@ -1,18 +1,14 @@
 package com.libraryManagement.entity;
 
-<<<<<<< HEAD
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
-=======
->>>>>>> c7d36ed5bb54a86c9e294c11535c98d56c52fac7
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-<<<<<<< HEAD
 import jakarta.persistence.OneToMany;
 @Entity
 public class Room {
