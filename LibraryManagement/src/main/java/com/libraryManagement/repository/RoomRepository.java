@@ -7,6 +7,4 @@ import com.libraryManagement.entity.Room;
 @Repository
 public interface RoomRepository extends JpaRepository<Room, Integer>{
 
-	
-	public Room findByRoomName(String roomName);
 }
