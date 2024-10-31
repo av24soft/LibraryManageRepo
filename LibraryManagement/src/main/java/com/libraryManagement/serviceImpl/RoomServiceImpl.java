@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.libraryManagement.CustomeExceptionHandler.RoomServiceException;
+import com.libraryManagement.customExceptionHandling.RoomServiceException;
 import com.libraryManagement.dto.RoomDto;
 import com.libraryManagement.entity.Room;
 import com.libraryManagement.repository.RoomRepository;

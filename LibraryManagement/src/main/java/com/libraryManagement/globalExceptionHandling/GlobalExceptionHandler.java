@@ -1,10 +1,13 @@
-package com.libraryManagement.CustomeExceptionHandler;
+package com.libraryManagement.globalExceptionHandling;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import com.libraryManagement.customExceptionHandling.RoomServiceException;
+import com.libraryManagement.customExceptionHandling.RowServiceException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -14,6 +17,15 @@ public class GlobalExceptionHandler {
 	{
 		return new ResponseEntity(roomServiceException.getMessage(),HttpStatusCode.valueOf(roomServiceException.getCode()));
 	}
+	
+	
+	@ExceptionHandler(RowServiceException.class)
+	public ResponseEntity handleRowServiceException(RowServiceException exception)
+	{
+		return new ResponseEntity(exception.getMessage(),HttpStatus.BAD_REQUEST);
+	}
+	
+	
 	
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity exception(Exception exception)
