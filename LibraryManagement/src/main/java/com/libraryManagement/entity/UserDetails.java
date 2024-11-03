@@ -2,6 +2,8 @@ package com.libraryManagement.entity;
 
 
 
+import org.hibernate.validator.constraints.Length;
+
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
@@ -10,6 +12,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class UserDetails {
@@ -17,14 +22,20 @@ public class UserDetails {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int userid;
+	@NotEmpty
+	@Length(min = 3,max=50)
 	private String userName;
 	private String userAddress;
+	@Email
 	private String userEmail;
 	@OneToOne(mappedBy = "userDetails",cascade = CascadeType.ALL)
 	@JsonManagedReference
 	private Seat seat;
+	@NotNull
 	private String userStatus;
+	@NotNull
 	private String userRole;
+	@NotNull
 	private String userPassword;
 	public String getUserEmail() {
 		return userEmail;
