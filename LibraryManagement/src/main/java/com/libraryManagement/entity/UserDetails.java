@@ -19,9 +19,37 @@ public class UserDetails {
 	private int userid;
 	private String userName;
 	private String userAddress;
+	private String userEmail;
 	@OneToOne(mappedBy = "userDetails",cascade = CascadeType.ALL)
 	@JsonManagedReference
 	private Seat seat;
+	private String userStatus;
+	private String userRole;
+	private String userPassword;
+	public String getUserEmail() {
+		return userEmail;
+	}
+	public void setUserEmail(String userEmail) {
+		this.userEmail = userEmail;
+	}
+	public String getUserStatus() {
+		return userStatus;
+	}
+	public void setUserStatus(String userStatus) {
+		this.userStatus = userStatus;
+	}
+	public String getUserRole() {
+		return userRole;
+	}
+	public void setUserRole(String userRole) {
+		this.userRole = userRole;
+	}
+	public String getUserPassword() {
+		return userPassword;
+	}
+	public void setUserPassword(String userPassword) {
+		this.userPassword = userPassword;
+	}
 	public int getUserid() {
 		return userid;
 	}
@@ -46,12 +74,18 @@ public class UserDetails {
 	public void setSeat(Seat seat) {
 		this.seat = seat;
 	}
-	public UserDetails(int userid, String userName, String userAddress, Seat seat) {
+	
+	public UserDetails(int userid, String userName, String userAddress, String userEmail, Seat seat, String userStatus,
+			String userRole, String userPassword) {
 		super();
 		this.userid = userid;
 		this.userName = userName;
 		this.userAddress = userAddress;
+		this.userEmail = userEmail;
 		this.seat = seat;
+		this.userStatus = userStatus;
+		this.userRole = userRole;
+		this.userPassword = userPassword;
 	}
 	public UserDetails() {
 		super();

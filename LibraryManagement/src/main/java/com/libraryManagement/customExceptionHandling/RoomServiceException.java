@@ -1,4 +1,4 @@
-package com.libraryManagement.CustomeExceptionHandler;
+package com.libraryManagement.customExceptionHandling;
 
 public class RoomServiceException extends RuntimeException{
 
