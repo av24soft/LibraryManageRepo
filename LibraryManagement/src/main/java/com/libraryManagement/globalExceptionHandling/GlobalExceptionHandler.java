@@ -1,5 +1,6 @@
 package com.libraryManagement.globalExceptionHandling;
 
+import com.libraryManagement.customExceptionHandling.SeatServiceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -31,5 +32,10 @@ public class GlobalExceptionHandler {
 	public ResponseEntity exception(Exception exception)
 	{
 		return new ResponseEntity(exception.getMessage(),HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler(SeatServiceException.class)
+	public ResponseEntity<String> handleSeatServiceException(SeatServiceException exception) {
+		return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
 	}
 }

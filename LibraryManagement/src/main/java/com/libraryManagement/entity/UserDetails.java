@@ -12,11 +12,14 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
+
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
+import lombok.Data;
 @Entity
+@Data
 public class UserDetails {
 
 	@Id
@@ -25,6 +28,7 @@ public class UserDetails {
 	@NotEmpty
 	@Length(min = 3,max=50)
 	private String userName;
+
 	private String userAddress;
 	@Email
 	private String userEmail;
