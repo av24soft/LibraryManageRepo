@@ -6,8 +6,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.libraryManagement.customExceptionHandling.AlreadyBookedException;
 import com.libraryManagement.customExceptionHandling.RoomServiceException;
 import com.libraryManagement.customExceptionHandling.RowServiceException;
+import com.libraryManagement.customExceptionHandling.SeatNotFoundException;
+import com.libraryManagement.customExceptionHandling.UserDoesNotExists;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -27,6 +30,22 @@ public class GlobalExceptionHandler {
 	
 	
 	
+	@ExceptionHandler(AlreadyBookedException.class)
+    public ResponseEntity<String> handleSeatAlreadyBookedException(AlreadyBookedException alreadyBookedException) {
+        return new ResponseEntity<>(alreadyBookedException.getMessage(), HttpStatus.valueOf(alreadyBookedException.getCode()));
+    
+    }
+
+    @ExceptionHandler(SeatNotFoundException.class)
+    public ResponseEntity<String> handleSeatNotFoundException(SeatNotFoundException seatNotFoundException) {
+        return new ResponseEntity<>(seatNotFoundException.getMessage(), HttpStatus.valueOf(seatNotFoundException.getCode()));
+    }
+
+    @ExceptionHandler(UserDoesNotExists.class)
+    public ResponseEntity<String> handleUserNotFoundException(UserDoesNotExists userDoesNotExists) {
+        return new ResponseEntity<>(userDoesNotExists.getMessage(), HttpStatus.valueOf(userDoesNotExists.getCode()));
+    }
+
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity exception(Exception exception)
 	{
