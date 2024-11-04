@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.libraryManagement.customExceptionHandling.RoomServiceException;
 import com.libraryManagement.customExceptionHandling.RowServiceException;
+import com.libraryManagement.customExceptionHandling.SeatServiceException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -25,7 +26,12 @@ public class GlobalExceptionHandler {
 		return new ResponseEntity(exception.getMessage(),HttpStatus.BAD_REQUEST);
 	}
 	
-	
+	@ExceptionHandler(SeatServiceException.class)
+	public ResponseEntity handleSeatServiceException(SeatServiceException exception)
+	{
+		return new ResponseEntity(exception.getMessage(),HttpStatus.BAD_REQUEST);
+	}
+
 	
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity exception(Exception exception)
