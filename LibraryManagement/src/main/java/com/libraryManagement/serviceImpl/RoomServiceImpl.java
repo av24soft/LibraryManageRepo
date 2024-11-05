@@ -33,12 +33,19 @@ public class RoomServiceImpl implements RoomService{
 	@Override
 	public List<Room> getAllRoom() {
 		List<Room> room = roomRepository.findAll();
+		if(room ==null) {
+			throw new RoomServiceException(409, "Room Not Found");
+		}
 		return room;
 	}
 	@Override
 	public Room getRoom(Integer id) {
 		
-		return roomRepository.findById(id).get();
+		Room room = roomRepository.findById(id).get();
+		if( room ==null) {
+			throw new RoomServiceException(409, "Room Not Found");
+		}
+		return room;
 	}
 }
 
