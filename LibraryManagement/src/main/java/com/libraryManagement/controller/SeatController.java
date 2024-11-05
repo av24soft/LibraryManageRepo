@@ -13,7 +13,7 @@ import com.libraryManagement.entity.Seat;
 import com.libraryManagement.serviceImpl.SeatServiceImpl;
 
 @RestController
-@RequestMapping("Seat")
+@RequestMapping("seat")
 public class SeatController {
 	
 	@Autowired

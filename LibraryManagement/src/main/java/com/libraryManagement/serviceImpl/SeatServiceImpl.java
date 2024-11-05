@@ -20,11 +20,7 @@ public class SeatServiceImpl  implements SeatService{
 	@Override
     public Seat createSeat(SeatDto dto) {
         
-         
-//        if (dto.getStartDate() == null || dto.getEndDate() == null) {
-//            throw new SeatServiceException("Start and end dates are required");
-//        }
-//        
+        
         if (dto.getFees() <= 0) {
             throw new SeatServiceException("Fees must be greater than 0");
         }
@@ -40,12 +36,7 @@ public class SeatServiceImpl  implements SeatService{
             .orElseThrow(() -> new SeatServiceException("Invalid Row ID"));
         seat.setRow(row);
 
-        /*
-        Userss userss = userssRepo.findById(dto.getUserssId()).orElseThrow(() -> 
-            new SeatServiceException("Invalid Userss ID"));
-        seat.setUserss(userss);
-        */
-
+      
         return seatRepository.save(seat);
     }
 
