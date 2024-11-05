@@ -17,28 +17,33 @@ public class SeatServiceImpl  implements SeatService{
 	@Autowired
 	SeatRepository seatRepository;
 	
-	@Override
-    public Seat createSeat(SeatDto dto) {
-        
-        
-        if (dto.getFees() <= 0) {
-            throw new SeatServiceException("Fees must be greater than 0");
-        }
+	 @Override
+	    public Seat createSeat(SeatDto dto) {
+	        try {
+	            if (dto.getFees() <= 0) {
+	                throw new SeatServiceException("Fees must be greater than 0");
+	            }
 
-        Seat seat = new Seat();
-        seat.setEndDate(dto.getEndDate());
-        seat.setStartDate(dto.getStartDate());
-        seat.setFees(dto.getFees());
-        seat.setAvailable(dto.isAvailable());
-        
-        
-        Row row = rowRepository.findById(dto.getRowId())
-            .orElseThrow(() -> new SeatServiceException("Invalid Row ID"));
-        seat.setRow(row);
+	            Seat seat = new Seat();
+	            seat.setEndDate(dto.getEndDate());
+	            seat.setStartDate(dto.getStartDate());
+	            seat.setFees(dto.getFees());
+	            seat.setAvailable(dto.isAvailable());
 
-      
-        return seatRepository.save(seat);
-    }
+	            Row row = rowRepository.findById(dto.getRowId())
+	                .orElseThrow(() -> new SeatServiceException("Invalid Row ID"));
+	            seat.setRow(row);
 
+	            return seatRepository.save(seat);
 
+	        } catch (SeatServiceException e) {
+	            
+	            System.err.println("Seat creation failed: " + e.getMessage());
+	            throw e;  
+	        } catch (Exception e) {
+	            
+	            System.err.println("An unexpected error occurred: " + e.getMessage());
+	            throw e;
+	        }
+	    }
 }
