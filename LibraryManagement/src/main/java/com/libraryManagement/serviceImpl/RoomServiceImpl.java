@@ -1,6 +1,7 @@
 package com.libraryManagement.serviceImpl;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,5 +31,15 @@ public class RoomServiceImpl implements RoomService{
 		room.setRoomName(roomDto.getRoomName());
 		roomRepository.save(room);
 	}
-
+	@Override
+	public List<Room> getAllRoom() {
+		List<Room> room = roomRepository.findAll();
+		return room;
+	}
+	@Override
+	public Room getRoom(Integer id) {
+		
+		return roomRepository.findById(id).get();
+	}
 }
+
