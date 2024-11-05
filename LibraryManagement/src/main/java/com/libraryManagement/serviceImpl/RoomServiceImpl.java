@@ -18,7 +18,6 @@ public class RoomServiceImpl implements RoomService{
 	RoomRepository roomRepository;
 	@Override
 	public void createRoom(RoomDto roomDto) {
-		// TODO Auto-generated method stub
 		List<Room> rooms=roomRepository.findAll();
 		for(Room room:rooms)
 		{
