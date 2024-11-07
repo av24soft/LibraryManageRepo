@@ -1,5 +1,8 @@
 package com.libraryManagement.serviceImpl;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,15 +45,64 @@ public class BookSeatImpl implements BookSeatService {
 		if (seat.getUserDetails() != null) {
 			throw new BookSeatException(409, "Seat is already booked.");
 		}
+		
+		if(bookSeatDto.getEndDate().isBefore(bookSeatDto.getStartDate())) {
+			throw new BookSeatException(422,"EndDate must be after the StartDate");
+		}
+		
+		if(bookSeatDto.getEndDate().equals(bookSeatDto.getStartDate())) {
+			throw new BookSeatException(422,"EndDate and StartDate cannot be same");
+		}
+		
 
 		seat.setUserDetails(user);
 		seat.setStartDate(bookSeatDto.getStartDate());
 		seat.setEndDate(bookSeatDto.getEndDate());
 		seat.setBookedStatus(bookSeatDto.getBookedStatus());
+		
+		Seat s = seatRepository.save(seat);
+		
+		seatBookingCalculation(s);
+		s.setAvailable(false);
+		s.setBookedStatus("pending payment...! ");
+		
+		seatRepository.save(s);
+		
+		return "Seat booked successfully "+" payment done "+seatBookingCalculation(s);
+	}
+	
+	
 
-		seatRepository.save(seat);
+	public float seatBookingCalculation(Seat seat) {
 
-		return "Seat booked successfully";
+		if(seat != null) {
+		
+			if(seat.getFees()<=0) {
+				throw new BookSeatException(400,"Fees cannot be zero");
+			}
+			
+			if(seat.getEndDate().isBefore(seat.getStartDate())) {
+				
+				throw new BookSeatException(422,"EndDate must be after the StartDate");
+			}
+			
+		float seatPrice = seat.getFees();
+		
+		LocalDate d1 = seat.getStartDate();
+		LocalDate d2 = seat.getEndDate();
+		
+		
+		long noOfDays = ChronoUnit.DAYS.between(d1, d2);
+	    
+		if(noOfDays <= 0) {
+			throw new BookSeatException(422,"invalid date");
+		}
+		
+	    float totalAmount = (seatPrice * (noOfDays+1))/30;
+	    
+		return totalAmount;
+		}	
+		return 0;
 	}
 
 }

@@ -22,9 +22,9 @@ public class BookSeatController {
 
 	@PostMapping
 	public ResponseEntity<Seat> bookSeat(@RequestBody BookSeatDto bookSeatDto) {
-		bookSeatService.bookSeat(bookSeatDto);
+		String s = bookSeatService.bookSeat(bookSeatDto);
 
-		return new ResponseEntity<Seat>(HttpStatus.OK);
+		return new ResponseEntity(s,HttpStatus.OK);
 
 	}
 
