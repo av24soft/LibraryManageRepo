@@ -5,7 +5,6 @@ import java.time.LocalDate;
 public class SeatDto {
 	
 	private int rowId;
-	private boolean isAvailable;
 	private float fees;
 
 	public int getRowId() {
@@ -16,13 +15,6 @@ public class SeatDto {
 		this.rowId = rowId;
 	}
 
-	public boolean isAvailable() {
-		return isAvailable;
-	}
-
-	public void setAvailable(boolean isAvailable) {
-		this.isAvailable = isAvailable;
-	}
 
 	public float getFees() {
 		return fees;

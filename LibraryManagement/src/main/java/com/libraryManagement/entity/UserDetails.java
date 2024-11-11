@@ -4,6 +4,7 @@ package com.libraryManagement.entity;
 
 import org.hibernate.validator.constraints.Length;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
@@ -39,6 +40,7 @@ public class UserDetails {
 	private String userPassword;
 	
 	 @OneToOne(mappedBy = "user")
+	 @JsonIgnore
 	 private Booking booking;
 	
 	

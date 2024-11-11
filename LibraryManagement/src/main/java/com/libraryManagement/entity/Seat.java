@@ -2,6 +2,7 @@ package com.libraryManagement.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -30,6 +31,7 @@ public class Seat {
 	private UserDetails userDetails;
 
 	 @OneToOne(mappedBy = "seat", cascade = CascadeType.ALL)
+	 @JsonIgnore
 	 private Booking booking;
 	
 	private float fees;

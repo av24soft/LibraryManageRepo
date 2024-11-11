@@ -26,7 +26,7 @@ public class SeatServiceImpl  implements SeatService{
 
 	            Seat seat = new Seat();
 	            seat.setFees(dto.getFees());
-	            seat.setAvailable(dto.isAvailable());
+	            seat.setAvailable(true);
 	            
 	            Row row = rowRepository.findById(dto.getRowId())
 	                .orElseThrow(() -> new SeatServiceException("Invalid Row ID"));

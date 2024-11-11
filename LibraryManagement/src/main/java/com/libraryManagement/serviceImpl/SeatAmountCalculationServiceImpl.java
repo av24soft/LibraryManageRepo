@@ -53,9 +53,10 @@ public class SeatAmountCalculationServiceImpl implements SeatAmountCalculationSe
 			
 			float seatPrice = seat.getFees();
 			seat.setUserDetails(user);
+			user.setSeat(seat);
 			
 			seatRepository.save(seat);
-			
+			userRepository.save(user);
 			
 			Booking booking = new Booking();
 			

@@ -38,11 +38,12 @@ public class BookSeatImpl implements BookSeatService {
 			throw new BookSeatException(404, "Please select seat first");
 		}
 		
-		booking.setBooked(true);
+		booking.setBooked(bookSeatDto.isBooked());
 		booking.setPaymentStatus(bookSeatDto.getPaymentStatus());
 		
-		seat.setAvailable(false);
+		seat.setAvailable(bookSeatDto.isAvailable());
 		seat.setBookedStatus(bookSeatDto.getBookedStatus());
+		
 		
 		
 		booking.setSeat(seat);
@@ -57,5 +58,5 @@ public class BookSeatImpl implements BookSeatService {
 	catch(Exception e) {
 		throw new BookSeatException(400, e.getMessage());
 	}
-}
+  }
 }
