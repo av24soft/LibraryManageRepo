@@ -1,8 +1,11 @@
 package com.libraryManagement.serviceImpl;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.libraryManagement.customExceptionHandling.BookSeatException;
+import com.libraryManagement.customExceptionHandling.SeatServiceException;
 import com.libraryManagement.dto.BookSeatDto;
 import com.libraryManagement.entity.Seat;
 import com.libraryManagement.entity.Booking;
@@ -24,7 +27,7 @@ public class BookSeatImpl implements BookSeatService {
 	public Booking bookSeat(BookSeatDto bookSeatDto) {
 
 	try {	
-		Booking booking = bookingRepository.findById(bookSeatDto.getBookingId()).get();
+		Booking booking = bookingRepository.findById(bookSeatDto.getBookingId()).orElseThrow(() -> new BookSeatException("Invalid Booking ID"));
 		
 		if(booking == null) {
 			
@@ -53,7 +56,7 @@ public class BookSeatImpl implements BookSeatService {
 	
 	}
 	catch(BookSeatException e) {
-		throw new BookSeatException(400, e.getMessage());
+		throw new BookSeatException(400, "Invalid booking Id");
 	}
 	catch(Exception e) {
 		throw new BookSeatException(400, e.getMessage());
