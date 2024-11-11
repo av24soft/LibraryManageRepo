@@ -1,9 +1,10 @@
 package com.libraryManagement.entity;
 
-import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -29,19 +30,13 @@ public class Seat {
 	@JsonBackReference
 	private UserDetails userDetails;
 
-	private LocalDate startDate;
-	private LocalDate endDate;
+	 @OneToOne(mappedBy = "seat", cascade = CascadeType.ALL)
+	 @JsonIgnore
+	 private Booking booking;
+	
 	private float fees;
 	private boolean isAvailable;
 	private String bookedStatus;
-
-	public String getBookedStatus() {
-		return bookedStatus;
-	}
-
-	public void setBookedStatus(String bookedStatus) {
-		this.bookedStatus = bookedStatus;
-	}
 
 	public int getSeatNo() {
 		return seatNo;
@@ -67,21 +62,14 @@ public class Seat {
 		this.userDetails = userDetails;
 	}
 
-	public LocalDate getStartDate() {
-		return startDate;
+	public Booking getBooking() {
+		return booking;
 	}
 
-	public void setStartDate(LocalDate startDate) {
-		this.startDate = startDate;
+	public void setBooking(Booking booking) {
+		this.booking = booking;
 	}
 
-	public LocalDate getEndDate() {
-		return endDate;
-	}
-
-	public void setEndDate(LocalDate endDate) {
-		this.endDate = endDate;
-	}
 
 	public float getFees() {
 		return fees;
@@ -99,14 +87,22 @@ public class Seat {
 		this.isAvailable = isAvailable;
 	}
 
-	public Seat(int seatNo, Row row, UserDetails userDetails, LocalDate startDate, LocalDate endDate, float fees,
-			boolean isAvailable, String bookedStatus) {
+	public String getBookedStatus() {
+		return bookedStatus;
+	}
+
+	public void setBookedStatus(String bookedStatus) {
+		this.bookedStatus = bookedStatus;
+	}
+
+
+	public Seat(int seatNo, Row row, UserDetails userDetails, Booking booking, 
+			    float fees, boolean isAvailable, String bookedStatus) {
 		super();
 		this.seatNo = seatNo;
 		this.row = row;
 		this.userDetails = userDetails;
-		this.startDate = startDate;
-		this.endDate = endDate;
+		this.booking = booking;
 		this.fees = fees;
 		this.isAvailable = isAvailable;
 		this.bookedStatus = bookedStatus;
