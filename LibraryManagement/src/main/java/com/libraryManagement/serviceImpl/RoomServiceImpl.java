@@ -1,6 +1,7 @@
 package com.libraryManagement.serviceImpl;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,22 +31,27 @@ public class RoomServiceImpl implements RoomService{
 		room.setRoomName(roomDto.getRoomName());
 		roomRepository.save(room);
 	}
-	@Override
 	public List<Room> getAllRoom() {
-		List<Room> room = roomRepository.findAll();
-		if(room ==null) {
-			throw new RoomServiceException(409, "Room Not Found");
-		}
-		return room;
+	    try {
+	        List<Room> rooms = roomRepository.findAll();
+	        if (rooms == null || rooms.isEmpty()) {
+	            throw new RoomServiceException(409, "Rooms Not Found");
+	        }
+	        return rooms;
+	    } catch (Exception e) {
+	        throw new RoomServiceException(500, "Error fetching rooms: " + e.getMessage());
+	    }
 	}
+
 	@Override
 	public Room getRoom(Integer id) {
-		
-		Room room = roomRepository.findById(id).get();
-		if( room ==null) {
-			throw new RoomServiceException(409, "Room Not Found");
-		}
-		return room;
-	}
-}
+	    try {
+	        return roomRepository.findById(id)
+	                .orElseThrow(() -> new RoomServiceException(409, "Room Not Found"));
+	    } catch (RoomServiceException e) {
+	        throw new RoomServiceException(409, "Room Not Found");
+	    } catch (Exception e) {
+	        throw new RoomServiceException(500, "Error fetching room: " + e.getMessage());
+	    }
+	}}
 
