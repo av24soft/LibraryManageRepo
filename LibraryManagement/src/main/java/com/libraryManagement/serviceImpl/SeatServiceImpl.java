@@ -38,12 +38,14 @@ public class SeatServiceImpl  implements SeatService{
 
 	        } catch (SeatServiceException e) {
 	            
-	            System.err.println("Seat creation failed: " + e.getMessage());
-	            throw e;  
+	      
+	            throw new SeatServiceException ("Seat creation failed:" + e.getMessage());  
 	        } catch (Exception e) {
 	            
-	            System.err.println("An unexpected error occurred: " + e.getMessage());
-	            throw e;
+	        
+	            throw new SeatServiceException("An unexpected error occurred: " + e.getMessage()); 
 	        }
 	    }
+
+	
 }
