@@ -2,6 +2,8 @@ package com.libraryManagement.entity;
 
 
 
+import java.util.List;
+
 import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -12,6 +14,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
@@ -42,6 +45,10 @@ public class UserDetails {
 	 @OneToOne(mappedBy = "user")
 	 @JsonIgnore
 	 private Booking booking;
+	 
+	@OneToMany(mappedBy = "userDetails",cascade = CascadeType.ALL)
+	@JsonManagedReference
+	List<Transaction> transactions;
 	
 	
 	public int getUserid() {
@@ -71,6 +78,34 @@ public class UserDetails {
 
 	public void setUserAddress(String userAddress) {
 		this.userAddress = userAddress;
+	}
+
+
+	public UserDetails(int userid, @NotEmpty @Length(min = 3, max = 50) String userName, String userAddress,
+			@Email String userEmail, Seat seat, @NotNull String userStatus, @NotNull String userRole,
+			@NotNull String userPassword, Booking booking, List<Transaction> transactions) {
+		super();
+		this.userid = userid;
+		this.userName = userName;
+		this.userAddress = userAddress;
+		this.userEmail = userEmail;
+		this.seat = seat;
+		this.userStatus = userStatus;
+		this.userRole = userRole;
+		this.userPassword = userPassword;
+		this.booking = booking;
+		this.transactions = transactions;
+	}
+
+
+
+	public List<Transaction> getTransactions() {
+		return transactions;
+	}
+
+
+	public void setTransactions(List<Transaction> transactions) {
+		this.transactions = transactions;
 	}
 
 
@@ -132,22 +167,7 @@ public class UserDetails {
 	public void setBooking(Booking booking) {
 		this.booking = booking;
 	}
-	
 
-	public UserDetails(int userid, @NotEmpty @Length(min = 3, max = 50) String userName, String userAddress,
-			@Email String userEmail, Seat seat, @NotNull String userStatus, @NotNull String userRole,
-			@NotNull String userPassword, Booking booking) {
-		super();
-		this.userid = userid;
-		this.userName = userName;
-		this.userAddress = userAddress;
-		this.userEmail = userEmail;
-		this.seat = seat;
-		this.userStatus = userStatus;
-		this.userRole = userRole;
-		this.userPassword = userPassword;
-		this.booking = booking;
-	}
 
 
 	public UserDetails() {
