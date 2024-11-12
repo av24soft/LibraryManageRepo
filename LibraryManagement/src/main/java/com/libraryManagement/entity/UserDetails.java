@@ -3,6 +3,7 @@ package com.libraryManagement.entity;
 import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
@@ -17,6 +18,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
+@JsonIgnoreProperties({"userPassword", "userRole","userEmail","userStatus","seat"})
 public class UserDetails {
 
 	@Id
