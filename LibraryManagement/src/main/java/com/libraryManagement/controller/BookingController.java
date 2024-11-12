@@ -22,25 +22,24 @@ public class BookingController {
 
 	@Autowired
 	private BookSeatService bookSeatService;
-	
+
 	@Autowired
 	private SeatAmountCalculationService amountCalculationService;
 
 	@PutMapping
 	public ResponseEntity<Booking> bookSeat(@RequestBody BookSeatDto bookSeatDto) {
-		
-		Booking book  = bookSeatService.bookSeat(bookSeatDto);
 
-		return new ResponseEntity<Booking>(book,HttpStatus.OK);
+		Booking book = bookSeatService.bookSeat(bookSeatDto);
+
+		return new ResponseEntity<Booking>(book, HttpStatus.OK);
 
 	}
-	
+
 	@PostMapping("/amount")
 	public ResponseEntity<Booking> CalculateSeatBooking(@RequestBody CalculationDto calculationDto) {
-		
+
 		Booking b = amountCalculationService.calculateTotalAmount(calculationDto);
-		return new ResponseEntity<Booking>(b,HttpStatus.OK);
+		return new ResponseEntity<Booking>(b, HttpStatus.OK);
 	}
-	
 
 }

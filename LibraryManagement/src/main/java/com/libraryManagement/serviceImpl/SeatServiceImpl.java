@@ -48,11 +48,18 @@ public class SeatServiceImpl implements SeatService {
 
 	@Override
 	public List<Seat> getVacantSeats() {
-		try {
-			return seatRepository.findByIsAvailable(true);
-		} catch (Exception e) {
-			throw new SeatServiceException("Failed to fetch vacant seats: " + e.getMessage());
-		}
+	    try {
+	        List<Seat> vacantSeats = seatRepository.findByIsAvailable(true);
+	        
+	        if (vacantSeats.isEmpty()) {
+	            throw new SeatServiceException("No vacant seats available.");
+	        }
+	        
+	        return vacantSeats;
+	    } catch (Exception e) {
+	        throw new SeatServiceException("Failed to fetch vacant seats: " + e.getMessage());
+	    }
 	}
+
 
 }

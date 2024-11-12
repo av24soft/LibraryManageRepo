@@ -18,13 +18,11 @@ public class RowController {
 
 	@Autowired
 	RowService rowService;
-	
+
 	@PostMapping("/create")
 	public ResponseEntity<Row> createRow(@RequestBody RowDto rowDto) {
-		
-		rowService.createRow(rowDto);
-		
-		return new ResponseEntity<Row>(HttpStatus.CREATED);
+
+		return new ResponseEntity<Row>(rowService.createRow(rowDto), HttpStatus.CREATED);
 	}
-	
+
 }

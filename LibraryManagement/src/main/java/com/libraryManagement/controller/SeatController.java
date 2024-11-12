@@ -25,8 +25,7 @@ public class SeatController {
 
 	@PostMapping("/createSeat")
 	public ResponseEntity<Seat> createSeat(@RequestBody SeatDto dto) {
-		seatServiceimpl.createSeat(dto);
-		return new ResponseEntity(HttpStatus.CREATED);
+		return new ResponseEntity<Seat>(seatServiceimpl.createSeat(dto), HttpStatus.CREATED);
 
 	}
 

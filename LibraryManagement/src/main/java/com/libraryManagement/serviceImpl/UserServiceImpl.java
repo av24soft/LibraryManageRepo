@@ -9,12 +9,13 @@ import com.libraryManagement.repository.UserRepository;
 import com.libraryManagement.service.UserService;
 
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
 	@Autowired
 	UserRepository userRepository;
+
 	@Override
-	public void saveUser(UserDto userDto) {
+	public UserDetails saveUser(UserDto userDto) {
 		UserDetails userDetails = new UserDetails();
 		userDetails.setUserName(userDto.getUserName());
 		userDetails.setUserAddress(userDto.getUserAddress());
@@ -22,8 +23,8 @@ public class UserServiceImpl implements UserService{
 		userDetails.setUserRole(userDto.getUserRole());
 		userDetails.setUserStatus(userDto.getUserStatus());
 		userDetails.setUserPassword(userDto.getUserPassword());
-		userRepository.save(userDetails);
-		
+		return userRepository.save(userDetails);
+
 	}
 
 }

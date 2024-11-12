@@ -23,25 +23,22 @@ public class RoomController {
 
 	@Autowired
 	RoomService roomServiceImpl;
+
 	@PostMapping
-	public ResponseEntity<Room> createRoom(@RequestBody RoomDto roomDto)
-	{
-		roomServiceImpl.createRoom(roomDto);
-		return new ResponseEntity<Room>(HttpStatus.CREATED);
-	}
-	 @GetMapping
-	    public ResponseEntity getAllRooms() {
-	        List<Room> room = roomServiceImpl.getAllRoom();
-	        return new ResponseEntity(room ,HttpStatus.OK);
-	 	   
-	        
-	    }
-
-	    
-	    @GetMapping("/{id}")
-	    public ResponseEntity getRoomById(@PathVariable("id")Integer id) {
-	        return new ResponseEntity(roomServiceImpl.getRoom(id),HttpStatus.OK);
-	   
-	    }
+	public ResponseEntity<Room> createRoom(@RequestBody RoomDto roomDto) {
+		return new ResponseEntity<Room>(roomServiceImpl.createRoom(roomDto), HttpStatus.CREATED);
 	}
 
+	@GetMapping
+	public ResponseEntity getAllRooms() {
+		List<Room> room = roomServiceImpl.getAllRoom();
+		return new ResponseEntity(room, HttpStatus.OK);
+
+	}
+
+	@GetMapping("/{id}")
+	public ResponseEntity getRoomById(@PathVariable("id") Integer id) {
+		return new ResponseEntity(roomServiceImpl.getRoom(id), HttpStatus.OK);
+
+	}
+}

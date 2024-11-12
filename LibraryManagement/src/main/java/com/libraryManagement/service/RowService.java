@@ -1,9 +1,10 @@
 package com.libraryManagement.service;
 
 import com.libraryManagement.dto.RowDto;
+import com.libraryManagement.entity.Row;
 
 public interface RowService {
 	
-	public void createRow(RowDto rowDto);
+	public Row createRow(RowDto rowDto);
 	
 }
