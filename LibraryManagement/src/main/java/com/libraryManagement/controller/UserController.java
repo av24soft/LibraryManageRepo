@@ -17,13 +17,12 @@ import com.libraryManagement.service.UserService;
 public class UserController {
 
 	@Autowired
-	UserService  userService;
-	
+	UserService userService;
+
 	@PostMapping
 	public ResponseEntity<UserDetails> createUser(@RequestBody UserDto userDto) {
-		userService.saveUser(userDto);
-		return new ResponseEntity(HttpStatus.CREATED);
-		
+		return new ResponseEntity<UserDetails>(userService.saveUser(userDto), HttpStatus.CREATED);
+
 	}
-	
+
 }
