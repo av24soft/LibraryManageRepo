@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import org.apache.catalina.User;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -29,7 +30,8 @@ public class Booking {
 	
 	private LocalDate startDate;
 	private LocalDate endDate;
-	private float totalFees;
+	@Column(name = "totalFees "+"(\u20B9)")
+	private int totalFees;
 	private boolean isBooked;
 	private String paymentStatus;
 	private boolean isCanceled;
@@ -65,10 +67,10 @@ public class Booking {
 	public void setEndDate(LocalDate endDate) {
 		this.endDate = endDate;
 	}
-	public float getTotalFees() {
+	public int getTotalFees() {
 		return totalFees;
 	}
-	public void setTotalFees(float totalFees) {
+	public void setTotalFees(int totalFees) {
 		this.totalFees = totalFees;
 	}
 	public boolean isBooked() {

@@ -1,11 +1,9 @@
 package com.libraryManagement.serviceImpl;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.libraryManagement.customExceptionHandling.BookSeatException;
-import com.libraryManagement.customExceptionHandling.SeatServiceException;
 import com.libraryManagement.dto.BookSeatDto;
 import com.libraryManagement.entity.Seat;
 import com.libraryManagement.entity.Booking;
@@ -41,13 +39,12 @@ public class BookSeatImpl implements BookSeatService {
 			throw new BookSeatException(404, "Please select seat first");
 		}
 		
-		booking.setBooked(bookSeatDto.isBooked());
-		booking.setPaymentStatus(bookSeatDto.getPaymentStatus());
+		booking.setBooked(true);;
+		booking.setPaymentStatus("Done");
+		booking.setCanceled(false);
 		
-		seat.setAvailable(bookSeatDto.isAvailable());
-		seat.setBookedStatus(bookSeatDto.getBookedStatus());
-		
-		
+		seat.setAvailable(false);
+		seat.setBookedStatus("Booked");
 		
 		booking.setSeat(seat);
 		

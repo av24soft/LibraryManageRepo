@@ -44,6 +44,10 @@ public class SeatAmountCalculationServiceImpl implements SeatAmountCalculationSe
 			if (seats.isEmpty()) {
 				throw new BookSeatException(404, "Seat does not exist.");
 			}
+			
+			if(user.getSeat() != null) {
+				throw new BookSeatException(409, "One seat is already booked by this User");
+			}
 
 			Seat seat = seats.get();
 
@@ -52,6 +56,8 @@ public class SeatAmountCalculationServiceImpl implements SeatAmountCalculationSe
 			}
 			
 			float seatPrice = seat.getFees();
+			
+			seat.setBookedStatus("Not Booked");
 			seat.setUserDetails(user);
 			user.setSeat(seat);
 			
@@ -71,10 +77,10 @@ public class SeatAmountCalculationServiceImpl implements SeatAmountCalculationSe
 				throw new BookSeatException(422,"EndDate and StartDate cannot be same");
 			}
 			
-			booking.setBooked(calculationDto.isBooked());
+			booking.setBooked(false);
 			booking.setStartDate(calculationDto.getStartDate());
 			booking.setEndDate(calculationDto.getEndDate());
-			booking.setCanceled(calculationDto.isCanceled());
+			booking.setCanceled(false);
 			
 			LocalDate d1 = booking.getStartDate();
 			LocalDate d2 = booking.getEndDate();
@@ -86,7 +92,8 @@ public class SeatAmountCalculationServiceImpl implements SeatAmountCalculationSe
 				throw new BookSeatException(422,"invalid date");
 			}
 			
-		    float totalAmount = (seatPrice * (noOfDays+1))/30;
+		    float totalAmountFloat = (seatPrice * (noOfDays+1))/30;
+		    int totalAmount = Math.round(totalAmountFloat);
 			
 			booking.setPaymentStatus("pending...");
 			booking.setTotalFees(totalAmount);
