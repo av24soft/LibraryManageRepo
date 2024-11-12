@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.libraryManagement.dto.CancelSeatDto;
 import com.libraryManagement.dto.SeatDto;
 import com.libraryManagement.entity.Seat;
+import com.libraryManagement.serviceImpl.BookSeatImpl;
 import com.libraryManagement.serviceImpl.SeatServiceImpl;
 
 @RestController
@@ -19,6 +21,7 @@ public class SeatController {
 	
 	@Autowired
 	SeatServiceImpl  seatServiceimpl;
+	
 	@PostMapping("/createSeat")
 	public ResponseEntity<Seat> createSeat(@RequestBody SeatDto dto) {
 		seatServiceimpl.createSeat(dto);
@@ -26,6 +29,10 @@ public class SeatController {
 		
 	
 	}
-
+	@PostMapping("/cancel")
+    public ResponseEntity<Seat> cancelSeat(@RequestBody CancelSeatDto dto) {
+	Seat s=	seatServiceimpl.cancelSeat(dto);
+		return new ResponseEntity(s,HttpStatus.OK);
 	
+}
 }

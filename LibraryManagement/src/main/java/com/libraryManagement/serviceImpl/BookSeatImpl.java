@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 
 import com.libraryManagement.customExceptionHandling.BookSeatException;
 import com.libraryManagement.dto.BookSeatDto;
+import com.libraryManagement.dto.CancelSeatDto;
 import com.libraryManagement.entity.Seat;
 import com.libraryManagement.entity.Booking;
 import com.libraryManagement.repository.BookingRepository;
@@ -59,4 +60,6 @@ public class BookSeatImpl implements BookSeatService {
 		throw new BookSeatException(400, e.getMessage());
 	}
   }
+
+	
 }
