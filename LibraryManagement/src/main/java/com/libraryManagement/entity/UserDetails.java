@@ -40,7 +40,7 @@ public class UserDetails {
 	@NotNull
 	private String userPassword;
 
-	@Column(nullable = true)
+	@Column(name = "Deposit Amount "+"(\u20B9)")
 	private int deposit;
 
 	@OneToOne(mappedBy = "user")

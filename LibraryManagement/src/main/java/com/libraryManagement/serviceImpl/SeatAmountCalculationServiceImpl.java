@@ -53,8 +53,11 @@ public class SeatAmountCalculationServiceImpl implements SeatAmountCalculationSe
 			if (seat.getUserDetails() != null) {
 				throw new BookSeatException(409, "Seat is already booked.");
 			}
+			
 
 			float seatPrice = seat.getFees();
+			
+			int depositAmount = user.getDeposit();
 			
 			seat.setBookedStatus("Not Booked");
 			seat.setUserDetails(user);
@@ -90,7 +93,7 @@ public class SeatAmountCalculationServiceImpl implements SeatAmountCalculationSe
 				throw new BookSeatException(422, "invalid date");
 			}
 
-		    float totalAmountFloat = (seatPrice * (noOfDays+1))/30;
+		    float totalAmountFloat = ((seatPrice * (noOfDays+1))/30)+depositAmount;
 		    int totalAmount = Math.round(totalAmountFloat);
 
 			booking.setPaymentStatus("pending...");

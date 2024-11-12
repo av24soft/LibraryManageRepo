@@ -6,8 +6,9 @@ public class UserDto {
 	private String userEmail;
 	private String userStatus;
 	private String userRole;
+	private int deposit;
 	public UserDto(String userName, String userAddress, String userEmail, String userStatus, String userRole,
-			String userPassword) {
+			String userPassword,int deposit) {
 		super();
 		this.userName = userName;
 		this.userAddress = userAddress;
@@ -15,6 +16,7 @@ public class UserDto {
 		this.userStatus = userStatus;
 		this.userRole = userRole;
 		this.userPassword = userPassword;
+		this.deposit = deposit;
 	}
 	private String userPassword;
 	public String getUserName() {
@@ -52,6 +54,13 @@ public class UserDto {
 	}
 	public void setUserPassword(String userPassword) {
 		this.userPassword = userPassword;
+	}
+	
+	public int getDeposit() {
+		return deposit;
+	}
+	public void setDeposit(int deposit) {
+		this.deposit = deposit;
 	}
 	public UserDto() {
 		super();
