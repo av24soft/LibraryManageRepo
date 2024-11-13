@@ -1,6 +1,8 @@
 package com.libraryManagement.entity;
 
 
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -11,6 +13,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 
 @Entity
@@ -36,7 +39,7 @@ public class Seat {
 	
 	private float fees;
 	private boolean isAvailable;
-	private String bookedStatus;
+	
 
 	public int getSeatNo() {
 		return seatNo;
@@ -70,7 +73,6 @@ public class Seat {
 		this.booking = booking;
 	}
 
-
 	public float getFees() {
 		return fees;
 	}
@@ -85,27 +87,6 @@ public class Seat {
 
 	public void setAvailable(boolean isAvailable) {
 		this.isAvailable = isAvailable;
-	}
-
-	public String getBookedStatus() {
-		return bookedStatus;
-	}
-
-	public void setBookedStatus(String bookedStatus) {
-		this.bookedStatus = bookedStatus;
-	}
-
-
-	public Seat(int seatNo, Row row, UserDetails userDetails, Booking booking, 
-			    float fees, boolean isAvailable, String bookedStatus) {
-		super();
-		this.seatNo = seatNo;
-		this.row = row;
-		this.userDetails = userDetails;
-		this.booking = booking;
-		this.fees = fees;
-		this.isAvailable = isAvailable;
-		this.bookedStatus = bookedStatus;
 	}
 
 	public Seat() {

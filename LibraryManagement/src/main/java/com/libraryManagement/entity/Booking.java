@@ -32,9 +32,7 @@ public class Booking {
 	private LocalDate endDate;
 	@Column(name = "totalFees "+"(\u20B9)")
 	private int totalFees;
-	private boolean isBooked;
-	private String paymentStatus;
-	private boolean isCanceled;
+	private String bookingStatus;
 	
 	public int getBookingId() {
 		return bookingId;
@@ -73,23 +71,12 @@ public class Booking {
 	public void setTotalFees(int totalFees) {
 		this.totalFees = totalFees;
 	}
-	public boolean isBooked() {
-		return isBooked;
+	
+	public String getBookingStatus() {
+		return bookingStatus;
 	}
-	public void setBooked(boolean isBooked) {
-		this.isBooked = isBooked;
-	}
-	public boolean isCanceled() {
-		return isCanceled;
-	}
-	public void setCanceled(boolean isCanceled) {
-		this.isCanceled = isCanceled;
-	}
-	public String getPaymentStatus() {
-		return paymentStatus;
-	}
-	public void setPaymentStatus(String paymentStatus) {
-		this.paymentStatus = paymentStatus;
+	public void setBookingStatus(String bookingStatus) {
+		this.bookingStatus = bookingStatus;
 	}
 	public Booking() {
 		super();
