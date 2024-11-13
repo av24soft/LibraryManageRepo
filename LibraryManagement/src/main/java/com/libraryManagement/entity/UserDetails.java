@@ -1,5 +1,7 @@
 package com.libraryManagement.entity;
 
+import java.util.List;
+
 import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -12,6 +14,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
@@ -110,6 +113,7 @@ public class UserDetails {
 	public void setUserPassword(String userPassword) {
 		this.userPassword = userPassword;
 	}
+
 
 	public Booking getBooking() {
 		return booking;
