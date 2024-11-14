@@ -6,6 +6,6 @@ import com.libraryManagement.entity.Seat;
 public interface SeatService {
 	public Seat createSeat(SeatDto dto);
 	
-
+	public void deleteSeat(int seatNo);
 
 }

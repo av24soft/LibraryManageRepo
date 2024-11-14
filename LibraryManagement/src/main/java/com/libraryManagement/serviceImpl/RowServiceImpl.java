@@ -12,45 +12,55 @@ import com.libraryManagement.repository.RowRepository;
 import com.libraryManagement.service.RowService;
 
 @Service
-public class RowServiceImpl implements RowService{
-	
+public class RowServiceImpl implements RowService {
+
 	@Autowired
 	RowRepository rowRepository;
-	
+
 	@Autowired
 	RoomRepository roomRepository;
-	
 
 	public void createRow(RowDto rowDto) {
-		
-		if(rowDto.getRowName()==null || rowDto.getRowName().isEmpty()) {
-			
+
+		if (rowDto.getRowName() == null || rowDto.getRowName().isEmpty()) {
+
 			throw new RowServiceException("Row name is required");
 		}
 
-		if(rowDto.getRowCapacity() <= 0) {
-			
+		if (rowDto.getRowCapacity() <= 0) {
+
 			throw new RowServiceException("Row capacity must be greater than 0");
 		}
-		
-		
 
 		Row row = new Row();
-		
+
 		row.setRowName(rowDto.getRowName());
 		row.setCapacity(rowDto.getRowCapacity());
-		
+
 		Room room = roomRepository.findById(rowDto.getRoomId()).get();
-		
-		if(room==null) {
-			
+
+		if (room == null) {
+
 			throw new RowServiceException("Invalid Room");
 		}
 
-	
 		row.setRoom(room);
-		
+
 		rowRepository.save(row);
+	}
+
+	@Override
+	public void deleteRow(int rowId) {
+		if (!rowRepository.existsById(rowId)) {
+			throw new RowServiceException("Row with ID " + rowId + " does not exist.");
+		}
+
+		try {
+			rowRepository.deleteById(rowId);
+			System.out.println("Row with ID " + rowId + " deleted successfully.");
+		} catch (Exception e) {
+			throw new RowServiceException("Failed to delete row with ID " + rowId + ": " + e.getMessage());
+		}
 	}
 
 }
