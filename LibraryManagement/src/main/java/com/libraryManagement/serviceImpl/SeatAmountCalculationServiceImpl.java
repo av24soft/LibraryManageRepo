@@ -41,6 +41,10 @@ public class SeatAmountCalculationServiceImpl implements SeatAmountCalculationSe
 			if (user.getSeat() != null) {
 				throw new BookSeatException(409, "One seat is already booked by this User");
 			}
+			
+			if (seat.getUserDetails() != null) {
+				throw new BookSeatException(409, "Currently this Seat is under the booking by someone");
+			}
 
 			if (!seat.isAvailable()) {
 				throw new BookSeatException(409, "Seat is already booked.");
@@ -75,7 +79,7 @@ public class SeatAmountCalculationServiceImpl implements SeatAmountCalculationSe
 			
 			booking.setTotalFees(totalAmount);
 			
-			user.setDeposit(depositAmount);
+			user.setDeposit(depositAmount);         
 			seat.setUserDetails(user);
 			user.setSeat(seat);
 			
