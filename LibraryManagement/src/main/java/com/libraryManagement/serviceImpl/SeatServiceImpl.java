@@ -1,14 +1,19 @@
 package com.libraryManagement.serviceImpl;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.libraryManagement.customExceptionHandling.SeatServiceException;
+import com.libraryManagement.dto.BookSeatDto;
 import com.libraryManagement.dto.SeatDto;
+import com.libraryManagement.entity.Booking;
 import com.libraryManagement.entity.Row;
 import com.libraryManagement.entity.Seat;
+import com.libraryManagement.entity.UserDetails;
+import com.libraryManagement.repository.BookingRepository;
 import com.libraryManagement.repository.RowRepository;
 import com.libraryManagement.repository.SeatRepository;
 import com.libraryManagement.service.SeatService;
@@ -19,6 +24,9 @@ public class SeatServiceImpl implements SeatService {
 	RowRepository rowRepository;
 	@Autowired
 	SeatRepository seatRepository;
+	@Autowired
+	BookingRepository bookingRepository;
+
 
 	@Override
 	public Seat createSeat(SeatDto dto) {
@@ -62,4 +70,33 @@ public class SeatServiceImpl implements SeatService {
 	}
 
 
+	@Override
+	public Seat cancelSeat(BookSeatDto dto) {
+		try {
+			Optional<Booking> b = bookingRepository.findById(dto.getBookingId());
+
+			Booking booking = b.get();
+
+			Seat seat = booking.getSeat();
+			UserDetails user = booking.getUser();
+			seat.setAvailable(true);
+			booking.setBookingStatus("cancel");
+			booking.setSeat(null);
+			booking.setUser(null);
+
+			seat.setUserDetails(null);
+			user.setSeat(null);
+
+			seatRepository.save(seat);
+			bookingRepository.save(booking);
+
+			return seat;
+		} catch (SeatServiceException e) {
+
+			throw new SeatServiceException("invalid booking id" + e.getMessage());
+		} catch (Exception e) {
+
+			throw new SeatServiceException("Seat Cancelation failed  " + e.getMessage());
+		}
+	}
 }
