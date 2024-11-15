@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.libraryManagement.customExceptionHandling.RoomServiceException;
+import com.libraryManagement.customExceptionHandling.RowServiceException;
 import com.libraryManagement.dto.RoomDto;
 import com.libraryManagement.entity.Room;
 import com.libraryManagement.repository.RoomRepository;
@@ -31,6 +32,7 @@ public class RoomServiceImpl implements RoomService {
 		room.setRoomName(roomDto.getRoomName());
 		return roomRepository.save(room);
 	}
+	
 
 	public List<Room> getAllRoom() {
 		try {
@@ -54,4 +56,17 @@ public class RoomServiceImpl implements RoomService {
 			throw new RoomServiceException(500, "Error fetching room: " + e.getMessage());
 		}
 	}
+	@Override
+	public void deleteRoom(int id) {
+		if (!roomRepository.existsById(id)) {
+			throw new RowServiceException("Room with ID " + id + " does not exist.");
+		}
+
+		try {
+			roomRepository.deleteById(id);
+		} catch (Exception e) {
+			throw new RoomServiceException("Failed to delete room with ID " + id + ": " + e.getMessage());
+		}
+		
+}
 }

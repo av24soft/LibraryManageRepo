@@ -48,5 +48,19 @@ public class RowServiceImpl implements RowService {
 
 		return rowRepository.save(row);
 	}
+	@Override
+	public void deleteRow(int rowId) {
+		if (!rowRepository.existsById(rowId)) {
+			throw new RowServiceException("Row with ID " + rowId + " does not exist.");
+		}
+
+		try {
+			rowRepository.deleteById(rowId);
+			System.out.println("Row with ID " + rowId + " deleted successfully.");
+		} catch (Exception e) {
+			throw new RowServiceException("Failed to delete row with ID " + rowId + ": " + e.getMessage());
+		}
+	}
+
 
 }
