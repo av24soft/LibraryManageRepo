@@ -9,5 +9,6 @@ public interface SeatService {
 	public Seat createSeat(SeatDto dto);
 
 	public List<Seat> getVacantSeats();
+	public void deleteSeat(int seatNo);
 
 }
