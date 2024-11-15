@@ -6,4 +6,6 @@ import com.libraryManagement.entity.UserDetails;
 public interface UserService {
 
 	public UserDetails saveUser(UserDto userDto);
+	
+	public UserDto getUser(Integer userId);
 }
