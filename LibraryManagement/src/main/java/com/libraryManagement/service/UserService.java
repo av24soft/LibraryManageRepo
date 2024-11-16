@@ -7,5 +7,5 @@ public interface UserService {
 
 	public UserDetails saveUser(UserDto userDto);
 	
-	public UserDto getUser(Integer userId);
+	public UserDetails getUser(Integer userId);
 }

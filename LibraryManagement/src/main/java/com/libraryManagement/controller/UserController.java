@@ -26,12 +26,10 @@ public class UserController {
 		return new ResponseEntity<UserDetails>(userService.saveUser(userDto), HttpStatus.CREATED);
 
 	}
-	
+
 	@GetMapping("/{id}")
-	public ResponseEntity<UserDto> getUser(@PathVariable Integer id) {
-	    UserDto userDto = userService.getUser(id);
-	    return new ResponseEntity<UserDto>(userDto, HttpStatus.OK);
+	public ResponseEntity<UserDetails> getUser(@PathVariable Integer id) {
+		return new ResponseEntity<UserDetails>(userService.getUser(id), HttpStatus.OK);
 	}
-	
 
 }

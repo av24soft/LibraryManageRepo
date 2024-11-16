@@ -23,16 +23,16 @@ public class UserServiceImpl implements UserService {
 			UserDetails userDetails = new UserDetails();
 
 			Optional<UserDetails> existingUser = userRepository.findByUserName(userDto.getUserName());
-			
+
 			if (existingUser.isPresent()) {
-				
+
 				throw new UserServiceException(409, "User Already Exist with the same username");
 			}
 
 			Optional<UserDetails> existingPassword = userRepository.findByUserPassword(userDto.getUserPassword());
-			
+
 			if (existingPassword.isPresent()) {
-				
+
 				throw new UserServiceException(409, "User Already Exist with the same password");
 			}
 
@@ -44,15 +44,14 @@ public class UserServiceImpl implements UserService {
 			userDetails.setUserPassword(userDto.getUserPassword());
 			userDetails.setDeposit(0);
 			return userRepository.save(userDetails);
-		}
-		catch (Exception e) {
-			
-            throw new UserServiceException(400, e.getMessage());
+		} catch (Exception e) {
+
+			throw new UserServiceException(400, e.getMessage());
 		}
 	}
 
 	@Override
-	public UserDto getUser(Integer userId) {
+	public UserDetails getUser(Integer userId) {
 
 		try {
 
@@ -63,19 +62,10 @@ public class UserServiceImpl implements UserService {
 			}
 
 			UserDetails user = getuser.get();
-
-			UserDto userDto = new UserDto();
-			userDto.setUserid(user.getUserid());
-			userDto.setUserName(user.getUserName());
-			userDto.setUserAddress(user.getUserAddress());
-			userDto.setUserEmail(user.getUserEmail());
-			userDto.setUserStatus(user.getUserStatus());
-			userDto.setUserRole(user.getUserRole());
-			return userDto;
+			return user;
 		} catch (Exception e) {
 			throw new UserServiceException(400, e.getMessage());
 		}
 	}
-
 
 }

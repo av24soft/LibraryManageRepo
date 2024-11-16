@@ -21,7 +21,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
-@JsonIgnoreProperties({"userPassword", "userRole","userEmail","userStatus","seat"})
+@JsonIgnoreProperties({"userPassword"})
 public class UserDetails {
 
 	@Id
