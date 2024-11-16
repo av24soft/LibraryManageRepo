@@ -1,7 +1,6 @@
 package com.libraryManagement.dto;
 
 public class UserDto {
-	private Integer userid;
 	private String userName;
 	private String userAddress;
 	private String userEmail;
@@ -9,24 +8,17 @@ public class UserDto {
 	private String userRole;
 	private String userPassword;
 
-	public UserDto(Integer userid, String userName, String userAddress, String userEmail, String userStatus,
-			String userRole, String userPassword) {
+
+
+	public UserDto(String userName, String userAddress, String userEmail, String userStatus, String userRole,
+			String userPassword) {
 		super();
-		this.userid = userid;
 		this.userName = userName;
 		this.userAddress = userAddress;
 		this.userEmail = userEmail;
 		this.userStatus = userStatus;
 		this.userRole = userRole;
 		this.userPassword = userPassword;
-	}
-
-	public Integer getUserid() {
-		return userid;
-	}
-
-	public void setUserid(Integer userid) {
-		this.userid = userid;
 	}
 
 	public String getUserName() {
