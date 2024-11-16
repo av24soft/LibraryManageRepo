@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.libraryManagement.dto.BookSeatDto;
 import com.libraryManagement.dto.SeatDto;
 import com.libraryManagement.entity.Seat;
 import com.libraryManagement.serviceImpl.SeatServiceImpl;
@@ -34,11 +35,21 @@ public class SeatController {
 	public ResponseEntity<Seat> getVacantSeats() {
 		List<Seat> vacantSeats = seatServiceimpl.getVacantSeats();
 		return new ResponseEntity(vacantSeats, HttpStatus.OK);
+	
+
+	@PostMapping("/cancel")
+		public ResponseEntity cancelSeat(@RequestBody BookSeatDto dto) {
+			Seat s = seatServiceimpl.cancelSeat(dto);
+			return new ResponseEntity(s,HttpStatus.OK);
+			
 	}
+
+=======
    
 	@DeleteMapping("/deleteSeat/{seatNo}")
     public ResponseEntity deleteSeat(@PathVariable("seatNo") int seatNo) {
         seatServiceimpl.deleteSeat(seatNo);
         return new ResponseEntity ("Seat deleted",HttpStatus.OK);
     }
+
 }
