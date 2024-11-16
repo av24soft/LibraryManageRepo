@@ -44,7 +44,6 @@ public class SeatController {
 			
 	}
 
-=======
    
 	@DeleteMapping("/deleteSeat/{seatNo}")
     public ResponseEntity deleteSeat(@PathVariable("seatNo") int seatNo) {
