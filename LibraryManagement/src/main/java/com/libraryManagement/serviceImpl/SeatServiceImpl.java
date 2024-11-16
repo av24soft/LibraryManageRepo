@@ -68,7 +68,18 @@ public class SeatServiceImpl implements SeatService {
 	        throw new SeatServiceException("Failed to fetch vacant seats: " + e.getMessage());
 	    }
 	}
-
+   @Override
+	public void deleteSeat(int seatNo) {
+	    try {
+	        if (seatRepository.existsById(seatNo)) {
+	            seatRepository.deleteById(seatNo);
+	            System.out.println("Seat with ID " + seatNo + " deleted successfully.");
+	        } else {
+	            throw new SeatServiceException("Seat with ID " + seatNo + " does not exist.");
+	        }
+	    } catch (Exception e) {
+	        throw new SeatServiceException("Failed to delete seat: " + e.getMessage());
+	    }
 
 	@Override
 	public Seat cancelSeat(BookSeatDto dto) {
@@ -99,4 +110,5 @@ public class SeatServiceImpl implements SeatService {
 			throw new SeatServiceException("Seat Cancelation failed  " + e.getMessage());
 		}
 	}
+}
 }

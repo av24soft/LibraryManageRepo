@@ -10,7 +10,11 @@ public interface SeatService {
 	public Seat createSeat(SeatDto dto);
 
 	public List<Seat> getVacantSeats();
+
 	
 	public Seat cancelSeat(BookSeatDto dto);
+
+	public void deleteSeat(int seatNo);
+
 
 }
