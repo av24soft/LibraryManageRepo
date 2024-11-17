@@ -14,6 +14,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.Email;
@@ -33,9 +34,9 @@ public class UserDetails {
 	private String userAddress;
 	@Email
 	private String userEmail;
-	@OneToOne(mappedBy = "userDetails", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "userDetails")
 	@JsonManagedReference
-	private Seat seat;
+	private List<Seat> seats;
 	@NotNull
 	private String userStatus;
 	@NotNull
@@ -46,9 +47,9 @@ public class UserDetails {
 	@Column(name = "Deposit Amount "+"(\u20B9)")
 	private int deposit;
 
-	@OneToOne(mappedBy = "user")
+	@OneToMany(mappedBy = "user")
 	@JsonIgnore
-	private Booking booking;
+	private List<Booking> bookings;
 
 	public int getUserid() {
 		return userid;
@@ -82,12 +83,12 @@ public class UserDetails {
 		this.userEmail = userEmail;
 	}
 
-	public Seat getSeat() {
-		return seat;
+	public List<Seat> getSeats() {
+		return seats;
 	}
 
-	public void setSeat(Seat seat) {
-		this.seat = seat;
+	public void setSeats(List<Seat> seats) {
+		this.seats = seats;
 	}
 
 	public String getUserStatus() {
@@ -114,13 +115,12 @@ public class UserDetails {
 		this.userPassword = userPassword;
 	}
 
-
-	public Booking getBooking() {
-		return booking;
+	public List<Booking> getBookings() {
+		return bookings;
 	}
 
-	public void setBooking(Booking booking) {
-		this.booking = booking;
+	public void setBookings(List<Booking> bookings) {
+		this.bookings = bookings;
 	}
 
 	public int getDeposit() {
@@ -132,19 +132,19 @@ public class UserDetails {
 	}
 
 	public UserDetails(int userid, @NotEmpty @Length(min = 3, max = 50) String userName, String userAddress,
-			@Email String userEmail, Seat seat, @NotNull String userStatus, @NotNull String userRole,
-			@NotNull String userPassword, int deposit, Booking booking) {
+			@Email String userEmail, List<Seat> seats, @NotNull String userStatus, @NotNull String userRole,
+			@NotNull String userPassword, int deposit, List<Booking> bookings) {
 		super();
 		this.userid = userid;
 		this.userName = userName;
 		this.userAddress = userAddress;
 		this.userEmail = userEmail;
-		this.seat = seat;
+		this.seats = seats;
 		this.userStatus = userStatus;
 		this.userRole = userRole;
 		this.userPassword = userPassword;
 		this.deposit = deposit;
-		this.booking = booking;
+		this.bookings = bookings;
 	}
 
 	public UserDetails() {

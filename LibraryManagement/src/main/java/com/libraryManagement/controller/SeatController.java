@@ -35,7 +35,7 @@ public class SeatController {
 	public ResponseEntity<Seat> getVacantSeats() {
 		List<Seat> vacantSeats = seatServiceimpl.getVacantSeats();
 		return new ResponseEntity(vacantSeats, HttpStatus.OK);
-	
+	}
 
 	@PostMapping("/cancel")
 		public ResponseEntity cancelSeat(@RequestBody BookSeatDto dto) {

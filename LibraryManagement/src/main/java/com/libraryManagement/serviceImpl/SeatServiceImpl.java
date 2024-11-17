@@ -16,6 +16,7 @@ import com.libraryManagement.entity.UserDetails;
 import com.libraryManagement.repository.BookingRepository;
 import com.libraryManagement.repository.RowRepository;
 import com.libraryManagement.repository.SeatRepository;
+import com.libraryManagement.repository.UserRepository;
 import com.libraryManagement.service.SeatService;
 
 @Service
@@ -26,7 +27,8 @@ public class SeatServiceImpl implements SeatService {
 	SeatRepository seatRepository;
 	@Autowired
 	BookingRepository bookingRepository;
-
+	@Autowired
+	UserRepository userRepository;
 
 	@Override
 	public Seat createSeat(SeatDto dto) {
@@ -56,30 +58,32 @@ public class SeatServiceImpl implements SeatService {
 
 	@Override
 	public List<Seat> getVacantSeats() {
-	    try {
-	        List<Seat> vacantSeats = seatRepository.findByIsAvailable(true);
-	        
-	        if (vacantSeats.isEmpty()) {
-	            throw new SeatServiceException("No vacant seats available.");
-	        }
-	        
-	        return vacantSeats;
-	    } catch (Exception e) {
-	        throw new SeatServiceException("Failed to fetch vacant seats: " + e.getMessage());
-	    }
+		try {
+			List<Seat> vacantSeats = seatRepository.findByIsAvailable(true);
+
+			if (vacantSeats.isEmpty()) {
+				throw new SeatServiceException("No vacant seats available.");
+			}
+
+			return vacantSeats;
+		} catch (Exception e) {
+			throw new SeatServiceException("Failed to fetch vacant seats: " + e.getMessage());
+		}
 	}
-   @Override
+
+	@Override
 	public void deleteSeat(int seatNo) {
-	    try {
-	        if (seatRepository.existsById(seatNo)) {
-	            seatRepository.deleteById(seatNo);
-	            System.out.println("Seat with ID " + seatNo + " deleted successfully.");
-	        } else {
-	            throw new SeatServiceException("Seat with ID " + seatNo + " does not exist.");
-	        }
-	    } catch (Exception e) {
-	        throw new SeatServiceException("Failed to delete seat: " + e.getMessage());
-	    }
+		try {
+			if (seatRepository.existsById(seatNo)) {
+				seatRepository.deleteById(seatNo);
+				System.out.println("Seat with ID " + seatNo + " deleted successfully.");
+			} else {
+				throw new SeatServiceException("Seat with ID " + seatNo + " does not exist.");
+			}
+		} catch (Exception e) {
+			throw new SeatServiceException("Failed to delete seat: " + e.getMessage());
+		}
+	}
 
 	@Override
 	public Seat cancelSeat(BookSeatDto dto) {
@@ -91,13 +95,12 @@ public class SeatServiceImpl implements SeatService {
 			Seat seat = booking.getSeat();
 			UserDetails user = booking.getUser();
 			seat.setAvailable(true);
-			booking.setBookingStatus("cancel");
-			booking.setSeat(null);
-			booking.setUser(null);
+			booking.setBookingStatus("Canceled !");
 
 			seat.setUserDetails(null);
-			user.setSeat(null);
+			user.setSeats(null);
 
+			userRepository.save(user);
 			seatRepository.save(seat);
 			bookingRepository.save(booking);
 
@@ -109,6 +112,6 @@ public class SeatServiceImpl implements SeatService {
 
 			throw new SeatServiceException("Seat Cancelation failed  " + e.getMessage());
 		}
+
 	}
-}
 }
