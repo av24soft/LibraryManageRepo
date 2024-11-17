@@ -28,14 +28,14 @@ public class Seat {
 	@JsonBackReference
 	private Row row;
 
-	@OneToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "userdetails_userid", referencedColumnName = "userid")
 	@JsonBackReference
 	private UserDetails userDetails;
 
-	 @OneToOne(mappedBy = "seat", cascade = CascadeType.ALL)
+	 @OneToMany(mappedBy = "seat", cascade = CascadeType.ALL)
 	 @JsonIgnore
-	 private Booking booking;
+	 private List<Booking> bookings;
 	
 	private float fees;
 	private boolean isAvailable;
@@ -65,12 +65,12 @@ public class Seat {
 		this.userDetails = userDetails;
 	}
 
-	public Booking getBooking() {
-		return booking;
+	public List<Booking> getBookings() {
+		return bookings;
 	}
 
-	public void setBooking(Booking booking) {
-		this.booking = booking;
+	public void setBookings(List<Booking> bookings) {
+		this.bookings = bookings;
 	}
 
 	public float getFees() {

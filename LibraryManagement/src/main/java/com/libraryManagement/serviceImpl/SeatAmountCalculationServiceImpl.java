@@ -2,6 +2,7 @@ package com.libraryManagement.serviceImpl;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,26 +35,21 @@ public class SeatAmountCalculationServiceImpl implements SeatAmountCalculationSe
 		try {
 			UserDetails user = userRepository.findById(calculationDto.getUserid())
 					.orElseThrow(() -> new BookSeatException(404, "User does not exist."));
-			
+
 			Seat seat = seatRepository.findById(calculationDto.getSeatNo())
 					.orElseThrow(() -> new BookSeatException(404, "Seat does not exist."));
-
-			if (user.getSeat() != null) {
-				throw new BookSeatException(409, "One seat is already booked by this User");
-			}
-			
-			if (seat.getUserDetails() != null) {
-				throw new BookSeatException(409, "Currently this Seat is under the booking by someone");
-			}
 
 			if (!seat.isAvailable()) {
 				throw new BookSeatException(409, "Seat is already booked.");
 			}
 
+			if (seat.getUserDetails() != null) {
+				throw new BookSeatException(409, "Currently this Seat is under the booking by someone");
+			}
+
 			float seatPrice = seat.getFees();
 
 			final int depositAmount = 500;
-
 
 			Booking booking = new Booking();
 
@@ -71,22 +67,27 @@ public class SeatAmountCalculationServiceImpl implements SeatAmountCalculationSe
 			if (noOfDays <= 0) {
 				throw new BookSeatException(422, "EndDate must be after the StartDate");
 			}
-			
-			float amount = ((seatPrice*(noOfDays+1))/30);
+
+			float amount = ((seatPrice * (noOfDays + 1)) / 30);
 			int roundValue = (Math.round(amount));
 
-			int totalAmount = (roundValue+depositAmount);
-			
+			if(user.getDeposit()==0) {
+			int totalAmount = (roundValue + depositAmount);
 			booking.setTotalFees(totalAmount);
+			}
+			else {
+				int totalAmount = (roundValue);
+				booking.setTotalFees(totalAmount);
+			}
 			
-			user.setDeposit(depositAmount);         
+			user.setDeposit(depositAmount);
 			seat.setUserDetails(user);
-			user.setSeat(seat);
-			
+
 			return bookingRepository.save(booking);
 
 		} catch (Exception e) {
 			throw new BookSeatException(400, e.getMessage());
 		}
 	}
+
 }
