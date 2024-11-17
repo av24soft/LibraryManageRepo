@@ -8,6 +8,8 @@ public class UserDto {
 	private String userRole;
 	private String userPassword;
 
+
+
 	public UserDto(String userName, String userAddress, String userEmail, String userStatus, String userRole,
 			String userPassword) {
 		super();

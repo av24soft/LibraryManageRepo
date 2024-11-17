@@ -23,16 +23,16 @@ public class UserServiceImpl implements UserService {
 			UserDetails userDetails = new UserDetails();
 
 			Optional<UserDetails> existingUser = userRepository.findByUserName(userDto.getUserName());
-			
+
 			if (existingUser.isPresent()) {
-				
+
 				throw new UserServiceException(409, "User Already Exist with the same username");
 			}
 
 			Optional<UserDetails> existingPassword = userRepository.findByUserPassword(userDto.getUserPassword());
-			
+
 			if (existingPassword.isPresent()) {
-				
+
 				throw new UserServiceException(409, "User Already Exist with the same password");
 			}
 
@@ -44,10 +44,27 @@ public class UserServiceImpl implements UserService {
 			userDetails.setUserPassword(userDto.getUserPassword());
 			userDetails.setDeposit(0);
 			return userRepository.save(userDetails);
+		} catch (Exception e) {
+
+			throw new UserServiceException(400, e.getMessage());
 		}
-		catch (Exception e) {
-			
-            throw new UserServiceException(400, e.getMessage());
+	}
+
+	@Override
+	public UserDetails getUser(Integer userId) {
+
+		try {
+
+			Optional<UserDetails> getuser = userRepository.findById(userId);
+
+			if (getuser.isEmpty()) {
+				throw new UserServiceException(404, "User Not Found Exception ");
+			}
+
+			UserDetails user = getuser.get();
+			return user;
+		} catch (Exception e) {
+			throw new UserServiceException(400, e.getMessage());
 		}
 	}
 
