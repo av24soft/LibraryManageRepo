@@ -69,11 +69,7 @@
 			<version>3.3.4</version>
 		</dependency>
 
-		<dependency>
-			<groupId>avSoft</groupId>
-			<artifactId>googleOAuth</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
+		
 	</dependencies>
 
 	<build>
