@@ -3,6 +3,8 @@ package com.libraryManagement.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,13 +20,16 @@ public class RowController {
 
 	@Autowired
 	RowService rowService;
-	
+
 	@PostMapping("/create")
 	public ResponseEntity<Row> createRow(@RequestBody RowDto rowDto) {
-		
-		rowService.createRow(rowDto);
-		
-		return new ResponseEntity<Row>(HttpStatus.CREATED);
+
+		return new ResponseEntity<Row>(rowService.createRow(rowDto), HttpStatus.CREATED);
 	}
-	
+
+	 @DeleteMapping("/delete/{id}")
+	    public ResponseEntity deleteRow(@PathVariable("id") int id) {
+	        rowService.deleteRow(id);
+	        return new ResponseEntity("Row deleted",HttpStatus.OK);
+	    }
 }

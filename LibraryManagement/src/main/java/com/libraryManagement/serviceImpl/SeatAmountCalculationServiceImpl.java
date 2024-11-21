@@ -2,6 +2,7 @@ package com.libraryManagement.serviceImpl;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,86 +19,75 @@ import com.libraryManagement.repository.UserRepository;
 import com.libraryManagement.service.SeatAmountCalculationService;
 
 @Service
-public class SeatAmountCalculationServiceImpl implements SeatAmountCalculationService{
+public class SeatAmountCalculationServiceImpl implements SeatAmountCalculationService {
 
 	@Autowired
 	private BookingRepository bookingRepository;
-	
+
 	@Autowired
 	private SeatRepository seatRepository;
-	
+
 	@Autowired
 	private UserRepository userRepository;
 
-	
 	public Booking calculateTotalAmount(CalculationDto calculationDto) {
 
 		try {
-			Optional<UserDetails> users = userRepository.findById(calculationDto.getUserid());
-			if (users.isEmpty()) {
-				throw new BookSeatException(404, "User does not exist.");
-			}
+			UserDetails user = userRepository.findById(calculationDto.getUserid())
+					.orElseThrow(() -> new BookSeatException(404, "User does not exist."));
 
-			UserDetails user = users.get();
+			Seat seat = seatRepository.findById(calculationDto.getSeatNo())
+					.orElseThrow(() -> new BookSeatException(404, "Seat does not exist."));
 
-			Optional<Seat> seats = seatRepository.findById(calculationDto.getSeatNo());
-			if (seats.isEmpty()) {
-				throw new BookSeatException(404, "Seat does not exist.");
-			}
-
-			Seat seat = seats.get();
-
-			if (seat.getUserDetails() != null) {
+			if (!seat.isAvailable()) {
 				throw new BookSeatException(409, "Seat is already booked.");
 			}
-			
+
+			if (seat.getUserDetails() != null) {
+				throw new BookSeatException(409, "Currently this Seat is under the booking by someone");
+			}
+
 			float seatPrice = seat.getFees();
-			seat.setUserDetails(user);
-			user.setSeat(seat);
-			
-			seatRepository.save(seat);
-			userRepository.save(user);
-			
+
+			final int depositAmount = 500;
+
 			Booking booking = new Booking();
-			
+
 			booking.setSeat(seat);
 			booking.setUser(user);
-			
-			if(calculationDto.getEndDate().isBefore(calculationDto.getStartDate())) {
-				throw new BookSeatException(422,"EndDate must be after the StartDate");
-			}
-			
-			if(calculationDto.getEndDate().equals(calculationDto.getStartDate())) {
-				throw new BookSeatException(422,"EndDate and StartDate cannot be same");
-			}
-			
-			booking.setBooked(calculationDto.isBooked());
+			booking.setBookingStatus("Processing...");
 			booking.setStartDate(calculationDto.getStartDate());
 			booking.setEndDate(calculationDto.getEndDate());
-			booking.setCanceled(calculationDto.isCanceled());
-			
+
 			LocalDate d1 = booking.getStartDate();
 			LocalDate d2 = booking.getEndDate();
-			
-			
+
 			long noOfDays = ChronoUnit.DAYS.between(d1, d2);
-		    
-			if(noOfDays <= 0) {
-				throw new BookSeatException(422,"invalid date");
+
+			if (noOfDays <= 0) {
+				throw new BookSeatException(422, "EndDate must be after the StartDate");
 			}
-			
-		    float totalAmount = (seatPrice * (noOfDays+1))/30;
-			
-			booking.setPaymentStatus("pending...");
+
+			float amount = ((seatPrice * (noOfDays + 1)) / 30);
+			int roundValue = (Math.round(amount));
+
+			if(user.getDeposit()==0) {
+			int totalAmount = (roundValue + depositAmount);
 			booking.setTotalFees(totalAmount);
+			}
+			else {
+				int totalAmount = (roundValue);
+				booking.setTotalFees(totalAmount);
+			}
 			
+			user.setDeposit(depositAmount);
+			seat.setUserDetails(user);
+
 			return bookingRepository.save(booking);
-			
-			}
-			catch(Exception e) {
-				throw new BookSeatException(400, e.getMessage());
-			}
+
+		} catch (Exception e) {
+			throw new BookSeatException(400, e.getMessage());
 		}
 	}
-	
 
+}

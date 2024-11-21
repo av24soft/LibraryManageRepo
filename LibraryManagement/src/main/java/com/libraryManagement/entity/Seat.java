@@ -1,6 +1,8 @@
 package com.libraryManagement.entity;
 
 
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -11,6 +13,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 
 @Entity
@@ -25,18 +28,18 @@ public class Seat {
 	@JsonBackReference
 	private Row row;
 
-	@OneToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "userdetails_userid", referencedColumnName = "userid")
 	@JsonBackReference
 	private UserDetails userDetails;
 
-	 @OneToOne(mappedBy = "seat", cascade = CascadeType.ALL)
+	 @OneToMany(mappedBy = "seat", cascade = CascadeType.ALL)
 	 @JsonIgnore
-	 private Booking booking;
+	 private List<Booking> bookings;
 	
 	private float fees;
 	private boolean isAvailable;
-	private String bookedStatus;
+	
 
 	public int getSeatNo() {
 		return seatNo;
@@ -62,14 +65,13 @@ public class Seat {
 		this.userDetails = userDetails;
 	}
 
-	public Booking getBooking() {
-		return booking;
+	public List<Booking> getBookings() {
+		return bookings;
 	}
 
-	public void setBooking(Booking booking) {
-		this.booking = booking;
+	public void setBookings(List<Booking> bookings) {
+		this.bookings = bookings;
 	}
-
 
 	public float getFees() {
 		return fees;
@@ -85,27 +87,6 @@ public class Seat {
 
 	public void setAvailable(boolean isAvailable) {
 		this.isAvailable = isAvailable;
-	}
-
-	public String getBookedStatus() {
-		return bookedStatus;
-	}
-
-	public void setBookedStatus(String bookedStatus) {
-		this.bookedStatus = bookedStatus;
-	}
-
-
-	public Seat(int seatNo, Row row, UserDetails userDetails, Booking booking, 
-			    float fees, boolean isAvailable, String bookedStatus) {
-		super();
-		this.seatNo = seatNo;
-		this.row = row;
-		this.userDetails = userDetails;
-		this.booking = booking;
-		this.fees = fees;
-		this.isAvailable = isAvailable;
-		this.bookedStatus = bookedStatus;
 	}
 
 	public Seat() {

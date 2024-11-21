@@ -7,11 +7,12 @@ import com.libraryManagement.entity.Room;
 
 public interface RoomService {
 
-	public void createRoom(RoomDto roomDto);
+	public Room createRoom(RoomDto roomDto);
 
 	public List<Room> getAllRoom();
 
 	public Room getRoom(Integer id);
+	public void deleteRoom(int id);
 
 	
 }
