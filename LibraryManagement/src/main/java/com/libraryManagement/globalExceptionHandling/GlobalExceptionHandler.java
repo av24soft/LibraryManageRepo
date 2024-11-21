@@ -10,6 +10,7 @@ import com.libraryManagement.customExceptionHandling.BookSeatException;
 import com.libraryManagement.customExceptionHandling.RoomServiceException;
 import com.libraryManagement.customExceptionHandling.RowServiceException;
 import com.libraryManagement.customExceptionHandling.SeatServiceException;
+import com.libraryManagement.customExceptionHandling.UploadDownloadException;
 import com.libraryManagement.customExceptionHandling.UserServiceException;
 
 @RestControllerAdvice
@@ -46,6 +47,14 @@ public class GlobalExceptionHandler {
 	public ResponseEntity bookSeatException(BookSeatException bookSeatException) {
 
 		return new ResponseEntity(bookSeatException.getMessage(), HttpStatusCode.valueOf(bookSeatException.getCode()));
+
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@ExceptionHandler(UploadDownloadException.class)
+	public ResponseEntity uploadDownloadException(UploadDownloadException uploadDownloadException) {
+		return new ResponseEntity(uploadDownloadException.getMessage(),
+				HttpStatusCode.valueOf(uploadDownloadException.getCode()));
 
 	}
 
