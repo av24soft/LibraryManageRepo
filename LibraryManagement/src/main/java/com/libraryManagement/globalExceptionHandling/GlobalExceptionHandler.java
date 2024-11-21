@@ -10,6 +10,7 @@ import com.libraryManagement.customExceptionHandling.BookSeatException;
 import com.libraryManagement.customExceptionHandling.RoomServiceException;
 import com.libraryManagement.customExceptionHandling.RowServiceException;
 import com.libraryManagement.customExceptionHandling.SeatServiceException;
+import com.libraryManagement.customExceptionHandling.TransactionServiceException;
 import com.libraryManagement.customExceptionHandling.UploadDownloadException;
 import com.libraryManagement.customExceptionHandling.UserServiceException;
 
@@ -49,6 +50,13 @@ public class GlobalExceptionHandler {
 		return new ResponseEntity(bookSeatException.getMessage(), HttpStatusCode.valueOf(bookSeatException.getCode()));
 
 	}
+	@ExceptionHandler(TransactionServiceException.class)
+	public ResponseEntity transactionServiceException(TransactionServiceException transactionServiceException) {
+
+		return new ResponseEntity(transactionServiceException.getMessage(), HttpStatusCode.valueOf(transactionServiceException.getCode()));
+
+	}
+
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@ExceptionHandler(UploadDownloadException.class)

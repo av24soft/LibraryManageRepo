@@ -2,6 +2,8 @@ package com.libraryManagement.entity;
 
 import java.util.List;
 
+import java.util.List;
+
 import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -14,7 +16,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.Email;
@@ -43,8 +44,12 @@ public class UserDetails {
 	private String userRole;
 	@NotNull
 	private String userPassword;
+	
+	@OneToMany(mappedBy = "userDetails",cascade = CascadeType.ALL)
+	@JsonManagedReference
+	List<Transaction> transactions;
 
-	@Column(name = "Deposit Amount "+"(\u20B9)")
+  @Column(name = "Deposit Amount "+"(\u20B9)")
 	private int deposit;
 
 	@OneToMany(mappedBy = "user")
@@ -75,6 +80,13 @@ public class UserDetails {
 		this.userAddress = userAddress;
 	}
 
+	public List<Transaction> getTransactions() {
+		return transactions;
+	}
+
+	public void setTransactions(List<Transaction> transactions) {
+		this.transactions = transactions;
+	}
 	public String getUserEmail() {
 		return userEmail;
 	}
@@ -130,23 +142,22 @@ public class UserDetails {
 	public void setDeposit(int deposit) {
 		this.deposit = deposit;
 	}
-
-	public UserDetails(int userid, @NotEmpty @Length(min = 3, max = 50) String userName, String userAddress,
-			@Email String userEmail, List<Seat> seats, @NotNull String userStatus, @NotNull String userRole,
-			@NotNull String userPassword, int deposit, List<Booking> bookings) {
+  
+  	public UserDetails(int userid, @NotEmpty @Length(min = 3, max = 50) String userName, String userAddress,
+			@Email String userEmail, Seat seat, @NotNull String userStatus, @NotNull String userRole,
+			@NotNull String userPassword, List<Booking> bookings, List<Transaction> transactions) {
 		super();
 		this.userid = userid;
 		this.userName = userName;
 		this.userAddress = userAddress;
 		this.userEmail = userEmail;
-		this.seats = seats;
+		this.seat = seat;
 		this.userStatus = userStatus;
 		this.userRole = userRole;
 		this.userPassword = userPassword;
-		this.deposit = deposit;
-		this.bookings = bookings;
+			this.bookings = bookings;
+		this.transactions = transactions;
 	}
-
 	public UserDetails() {
 		super();
 		// TODO Auto-generated constructor stub
