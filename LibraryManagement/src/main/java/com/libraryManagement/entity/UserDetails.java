@@ -80,13 +80,6 @@ public class UserDetails {
 		this.userAddress = userAddress;
 	}
 
-	public List<Transaction> getTransactions() {
-		return transactions;
-	}
-
-	public void setTransactions(List<Transaction> transactions) {
-		this.transactions = transactions;
-	}
 	public String getUserEmail() {
 		return userEmail;
 	}
@@ -127,12 +120,12 @@ public class UserDetails {
 		this.userPassword = userPassword;
 	}
 
-	public List<Booking> getBookings() {
-		return bookings;
+	public List<Transaction> getTransactions() {
+		return transactions;
 	}
 
-	public void setBookings(List<Booking> bookings) {
-		this.bookings = bookings;
+	public void setTransactions(List<Transaction> transactions) {
+		this.transactions = transactions;
 	}
 
 	public int getDeposit() {
@@ -142,25 +135,37 @@ public class UserDetails {
 	public void setDeposit(int deposit) {
 		this.deposit = deposit;
 	}
-  
-  	public UserDetails(int userid, @NotEmpty @Length(min = 3, max = 50) String userName, String userAddress,
-			@Email String userEmail, Seat seat, @NotNull String userStatus, @NotNull String userRole,
-			@NotNull String userPassword, List<Booking> bookings, List<Transaction> transactions) {
+
+	public List<Booking> getBookings() {
+		return bookings;
+	}
+
+	public void setBookings(List<Booking> bookings) {
+		this.bookings = bookings;
+	}
+
+	public UserDetails(int userid, @NotEmpty @Length(min = 3, max = 50) String userName, String userAddress,
+			@Email String userEmail, List<Seat> seats, @NotNull String userStatus, @NotNull String userRole,
+			@NotNull String userPassword, List<Transaction> transactions, int deposit, List<Booking> bookings) {
 		super();
 		this.userid = userid;
 		this.userName = userName;
 		this.userAddress = userAddress;
 		this.userEmail = userEmail;
-		this.seat = seat;
+		this.seats = seats;
 		this.userStatus = userStatus;
 		this.userRole = userRole;
 		this.userPassword = userPassword;
-			this.bookings = bookings;
 		this.transactions = transactions;
+		this.deposit = deposit;
+		this.bookings = bookings;
 	}
+
 	public UserDetails() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	
+	
 
 }
