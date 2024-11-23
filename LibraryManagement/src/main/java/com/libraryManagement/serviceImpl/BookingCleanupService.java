@@ -1,5 +1,7 @@
 package com.libraryManagement.serviceImpl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,8 @@ import java.util.List;
 @Service
 public class BookingCleanupService {
 
+	private static final Logger logger = LoggerFactory.getLogger(BookingCleanupService.class); // Logger initialization
+
 	@Autowired
 	private SeatRepository seatRepository;
 
@@ -30,7 +34,13 @@ public class BookingCleanupService {
 	public void cleanUpProcessingBookings() {
 
 		LocalDateTime cutoffTime = LocalDateTime.now().minusMinutes(5);
+		logger.info("Starting cleanup of processing bookings older than {} minutes", 5);
+
 		List<Booking> bookingsToDelete = bookingRepository.findProcessingBookingsOlderThan5Minutes(cutoffTime);
+
+		if (bookingsToDelete.isEmpty()) {
+			logger.info("No processing bookings found to clean up.");
+		}
 
 		for (Booking booking : bookingsToDelete) {
 
@@ -40,14 +50,16 @@ public class BookingCleanupService {
 			seat.setAvailable(true);
 			seat.setUserDetails(null);
 			seatRepository.save(seat);
+			logger.debug("Seat with ID {} has been released.", seat.getSeatNo());
 
 			user.setSeats(null);
 			userRepository.save(user);
+			logger.debug("User with ID {} has been updated.", user.getUserid());
 
-			System.out.println("Performing operations on booking with ID: " + booking.getBookingId());
-
+			logger.info("Successfully performed operations on booking with ID: {}", booking.getBookingId());
 		}
 
 		bookingRepository.deleteOldProcessingBookings(cutoffTime);
+		logger.info("Completed cleanup for processing bookings older than {} minutes", 5);
 	}
 }

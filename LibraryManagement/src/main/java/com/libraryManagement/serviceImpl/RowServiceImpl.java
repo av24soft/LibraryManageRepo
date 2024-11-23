@@ -1,5 +1,7 @@
 package com.libraryManagement.serviceImpl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,53 +16,59 @@ import com.libraryManagement.service.RowService;
 @Service
 public class RowServiceImpl implements RowService {
 
-	@Autowired
-	RowRepository rowRepository;
+    private static final Logger logger = LoggerFactory.getLogger(RowServiceImpl.class); // Logger initialization
 
-	@Autowired
-	RoomRepository roomRepository;
+    @Autowired
+    RowRepository rowRepository;
 
-	public Row createRow(RowDto rowDto) {
+    @Autowired
+    RoomRepository roomRepository;
 
-		if (rowDto.getRowName() == null || rowDto.getRowName().isEmpty()) {
+    public Row createRow(RowDto rowDto) {
 
-			throw new RowServiceException("Row name is required");
-		}
+        logger.info("Attempting to create row with name: {}", rowDto.getRowName());
 
-		if (rowDto.getRowCapacity() <= 0) {
+        if (rowDto.getRowName() == null || rowDto.getRowName().isEmpty()) {
+            logger.error("Row name is required.");
+            throw new RowServiceException("Row name is required");
+        }
 
-			throw new RowServiceException("Row capacity must be greater than 0");
-		}
+        if (rowDto.getRowCapacity() <= 0) {
+            logger.error("Row capacity must be greater than 0.");
+            throw new RowServiceException("Row capacity must be greater than 0");
+        }
 
-		Row row = new Row();
+        Row row = new Row();
+        row.setRowName(rowDto.getRowName());
+        row.setCapacity(rowDto.getRowCapacity());
 
-		row.setRowName(rowDto.getRowName());
-		row.setCapacity(rowDto.getRowCapacity());
+        Room room = roomRepository.findById(rowDto.getRoomId()).orElseThrow(() -> {
+            logger.error("Invalid room ID: {}", rowDto.getRoomId());
+            return new RowServiceException("Invalid Room");
+        });
 
-		Room room = roomRepository.findById(rowDto.getRoomId()).get();
+        row.setRoom(room);
+        Row savedRow = rowRepository.save(row);
 
-		if (room == null) {
+        logger.info("Row created successfully with name: {}", savedRow.getRowName());
+        return savedRow;
+    }
 
-			throw new RowServiceException("Invalid Room");
-		}
+    @Override
+    public void deleteRow(int rowId) {
+        logger.info("Attempting to delete row with ID: {}", rowId);
 
-		row.setRoom(room);
+        if (!rowRepository.existsById(rowId)) {
+            logger.error("Row with ID {} does not exist.", rowId);
+            throw new RowServiceException("Row with ID " + rowId + " does not exist.");
+        }
 
-		return rowRepository.save(row);
-	}
-	@Override
-	public void deleteRow(int rowId) {
-		if (!rowRepository.existsById(rowId)) {
-			throw new RowServiceException("Row with ID " + rowId + " does not exist.");
-		}
-
-		try {
-			rowRepository.deleteById(rowId);
-			System.out.println("Row with ID " + rowId + " deleted successfully.");
-		} catch (Exception e) {
-			throw new RowServiceException("Failed to delete row with ID " + rowId + ": " + e.getMessage());
-		}
-	}
-
-
+        try {
+            rowRepository.deleteById(rowId);
+            logger.info("Row with ID {} deleted successfully.", rowId);
+        } catch (Exception e) {
+            logger.error("Error deleting row with ID {}: {}", rowId, e.getMessage());
+            throw new RowServiceException("Failed to delete row with ID " + rowId + ": " + e.getMessage());
+        }
+    }
 }

@@ -1,5 +1,7 @@
 package com.libraryManagement.serviceImpl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,44 +16,49 @@ import com.libraryManagement.service.BookSeatService;
 @Service
 public class BookSeatImpl implements BookSeatService {
 
-	@Autowired
-	SeatRepository seatRepository;
+    private static final Logger logger = LoggerFactory.getLogger(BookSeatImpl.class); // Logger initialization
 
-	@Autowired
-	BookingRepository bookingRepository;
+    @Autowired
+    SeatRepository seatRepository;
 
-	@Override
-	public Booking bookSeat(BookSeatDto bookSeatDto) {
+    @Autowired
+    BookingRepository bookingRepository;
 
-		try {
-			Booking booking = bookingRepository.findById(bookSeatDto.getBookingId())
-					.orElseThrow(() -> new BookSeatException("Invalid Booking ID"));
+    @Override
+    public Booking bookSeat(BookSeatDto bookSeatDto) {
+        logger.info("Attempting to book seat for booking ID: {}", bookSeatDto.getBookingId());
 
-			if (booking == null) {
+        try {
+            Booking booking = bookingRepository.findById(bookSeatDto.getBookingId())
+                    .orElseThrow(() -> new BookSeatException("Invalid Booking ID"));
 
-				throw new BookSeatException(404, "Invalid id");
-			}
+            if (booking == null) {
+                logger.error("Booking with ID {} is not found", bookSeatDto.getBookingId());
+                throw new BookSeatException(404, "Invalid id");
+            }
 
-			Seat seat = booking.getSeat();
+            Seat seat = booking.getSeat();
 
-			if (seat == null) {
+            if (seat == null) {
+                logger.error("No seat assigned for booking ID: {}", bookSeatDto.getBookingId());
+                throw new BookSeatException(404, "Please select seat first");
+            }
 
-				throw new BookSeatException(404, "Please select seat first");
-			}
+            booking.setBookingStatus("Completed");
+            seat.setAvailable(false);
+            booking.setSeat(seat);
 
-			booking.setBookingStatus("Completed");
+            bookingRepository.save(booking);
+            logger.info("Seat booked successfully for booking ID: {}", bookSeatDto.getBookingId());
 
-			seat.setAvailable(false);
+            return booking;
 
-			booking.setSeat(seat);
-
-			bookingRepository.save(booking);
-			return booking;
-
-		} catch (BookSeatException e) {
-			throw new BookSeatException(400, "Invalid booking Id");
-		} catch (Exception e) {
-			throw new BookSeatException(400, e.getMessage());
-		}
-	}
+        } catch (BookSeatException e) {
+            logger.error("BookSeatException occurred: {}", e.getMessage());
+            throw new BookSeatException(400, "Invalid booking Id");
+        } catch (Exception e) {
+            logger.error("Exception occurred while booking seat: {}", e.getMessage());
+            throw new BookSeatException(400, e.getMessage());
+        }
+    }
 }
