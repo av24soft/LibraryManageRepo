@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.libraryManagement.customExceptionHandling.SeatServiceException;
@@ -73,16 +74,19 @@ public class SeatServiceImpl implements SeatService {
 
 	@Override
 	public void deleteSeat(int seatNo) {
-		try {
-			if (seatRepository.existsById(seatNo)) {
-				seatRepository.deleteById(seatNo);
-				System.out.println("Seat with ID " + seatNo + " deleted successfully.");
-			} else {
-				throw new SeatServiceException("Seat with ID " + seatNo + " does not exist.");
-			}
-		} catch (Exception e) {
-			throw new SeatServiceException("Failed to delete seat: " + e.getMessage());
-		}
+	    try {
+	        Seat seat = seatRepository.findById(seatNo)
+	                .orElseThrow(() -> new SeatServiceException("Seat with ID is not found"));
+
+	        if (!seat.isAvailable()) {
+	            throw new SeatServiceException("Seat is already booked.");
+	        }
+
+	        seatRepository.deleteById(seatNo);
+	        System.out.println("Seat with ID " + seatNo + " deleted successfully.");
+	    } catch (SeatServiceException e) {
+	        throw new SeatServiceException("Seat not deleted " + e.getMessage());
+	    }
 	}
 
 	@Override
