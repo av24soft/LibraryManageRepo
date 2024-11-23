@@ -1,9 +1,8 @@
 package com.libraryManagement.serviceImpl;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -58,6 +57,7 @@ public class SeatAmountCalculationServiceImpl implements SeatAmountCalculationSe
 			booking.setBookingStatus("Processing...");
 			booking.setStartDate(calculationDto.getStartDate());
 			booking.setEndDate(calculationDto.getEndDate());
+			booking.setBookingTime(LocalDateTime.now());
 
 			LocalDate d1 = booking.getStartDate();
 			LocalDate d2 = booking.getEndDate();
