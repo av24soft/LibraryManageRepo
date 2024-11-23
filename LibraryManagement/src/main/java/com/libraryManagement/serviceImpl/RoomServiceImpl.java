@@ -1,8 +1,6 @@
 package com.libraryManagement.serviceImpl;
 
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,6 +9,8 @@ import com.libraryManagement.customExceptionHandling.RoomServiceException;
 import com.libraryManagement.customExceptionHandling.RowServiceException;
 import com.libraryManagement.dto.RoomDto;
 import com.libraryManagement.entity.Room;
+import com.libraryManagement.entity.Row;
+import com.libraryManagement.entity.Seat;
 import com.libraryManagement.repository.RoomRepository;
 import com.libraryManagement.service.RoomService;
 
@@ -58,15 +58,16 @@ public class RoomServiceImpl implements RoomService {
 	}
 	@Override
 	public void deleteRoom(int id) {
-		if (!roomRepository.existsById(id)) {
-			throw new RowServiceException("Room with ID " + id + " does not exist.");
-		}
-
-		try {
-			roomRepository.deleteById(id);
-		} catch (Exception e) {
-			throw new RoomServiceException("Failed to delete room with ID " + id + ": " + e.getMessage());
-		}
+		Room room = roomRepository.findById(id)
+				.orElseThrow(() -> new RowServiceException("Room is not found."));
+		 
+		for(Row row : room.getRows()) {
+		for (Seat seat : row.getSeat()) {
+		        if (!seat.isAvailable()) {
+		            throw new RowServiceException("room cannot deleted, in that room seat is booked.");
+		        }}
+		roomRepository.deleteById(id);
 		
+}
 }
 }

@@ -7,6 +7,7 @@ import com.libraryManagement.customExceptionHandling.RowServiceException;
 import com.libraryManagement.dto.RowDto;
 import com.libraryManagement.entity.Room;
 import com.libraryManagement.entity.Row;
+import com.libraryManagement.entity.Seat;
 import com.libraryManagement.repository.RoomRepository;
 import com.libraryManagement.repository.RowRepository;
 import com.libraryManagement.service.RowService;
@@ -50,17 +51,17 @@ public class RowServiceImpl implements RowService {
 	}
 	@Override
 	public void deleteRow(int rowId) {
-		if (!rowRepository.existsById(rowId)) {
-			throw new RowServiceException("Row with ID " + rowId + " does not exist.");
-		}
+	    Row row = rowRepository.findById(rowId)
+	            .orElseThrow(() -> new RowServiceException("Row with ID " + rowId + " is not found."));
 
-		try {
-			rowRepository.deleteById(rowId);
-			System.out.println("Row with ID " + rowId + " deleted successfully.");
-		} catch (Exception e) {
-			throw new RowServiceException("Failed to delete row with ID " + rowId + ": " + e.getMessage());
-		}
+	    for (Seat seat : row.getSeat()) {
+	        if (!seat.isAvailable()) {
+	            throw new RowServiceException("row cannot deleted, in that row seat is booked.");
+	        }
+	    }
+
+	    rowRepository.deleteById(rowId);
+	    System.out.println("Row with ID " + rowId + " deleted successfully.");
 	}
-
 
 }
