@@ -1,7 +1,10 @@
 package com.libraryManagement.entity;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -9,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 
 @Entity
 public class Booking {
@@ -30,6 +34,11 @@ public class Booking {
 	@Column(name = "totalFees " + "(\u20B9)")
 	private int totalFees;
 	private String bookingStatus;
+	private LocalDateTime bookingTime;
+
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(referencedColumnName = "transactionNo", name = "txnNo")
+	Transaction transaction;
 
 	public int getBookingId() {
 		return bookingId;
@@ -85,6 +94,22 @@ public class Booking {
 
 	public void setBookingStatus(String bookingStatus) {
 		this.bookingStatus = bookingStatus;
+	}
+
+	public Transaction getTransaction() {
+		return transaction;
+	}
+
+	public void setTransaction(Transaction transaction) {
+		this.transaction = transaction;
+	}
+
+	public LocalDateTime getBookingTime() {
+		return bookingTime;
+	}
+
+	public void setBookingTime(LocalDateTime localDateTime) {
+		this.bookingTime = localDateTime;
 	}
 
 	public Booking() {
