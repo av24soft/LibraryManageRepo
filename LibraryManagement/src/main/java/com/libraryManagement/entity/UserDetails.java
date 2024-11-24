@@ -23,7 +23,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
-@JsonIgnoreProperties({"userPassword"})
+@JsonIgnoreProperties({ "userPassword" })
 public class UserDetails {
 
 	@Id
@@ -44,17 +44,20 @@ public class UserDetails {
 	private String userRole;
 	@NotNull
 	private String userPassword;
-	
-	@OneToMany(mappedBy = "userDetails",cascade = CascadeType.ALL)
+
+	@OneToMany(mappedBy = "userDetails", cascade = CascadeType.ALL)
 	@JsonManagedReference
 	List<Transaction> transactions;
 
-  @Column(name = "Deposit Amount "+"(\u20B9)")
+	@Column(name = "Deposit Amount " + "(\u20B9)")
 	private int deposit;
 
 	@OneToMany(mappedBy = "user")
 	@JsonIgnore
 	private List<Booking> bookings;
+
+	@OneToMany(mappedBy = "user")
+	private List<Complains> complains;
 
 	public int getUserid() {
 		return userid;
@@ -165,7 +168,5 @@ public class UserDetails {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	
-	
 
 }
