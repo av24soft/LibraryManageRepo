@@ -57,7 +57,7 @@ public class UserDetails {
 	private List<Booking> bookings;
 
 	@OneToMany(mappedBy = "user")
-	private List<Complains> complains;
+	private List<Complaints> complains;
 
 	public int getUserid() {
 		return userid;
