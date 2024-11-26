@@ -3,6 +3,8 @@ package com.libraryManagement.serviceImpl;
 import java.io.IOException;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,10 +20,13 @@ public class FileServiceImpl implements FileService {
 	@Autowired
 	private FileRepository fileRepository;
 
+	private static final Logger logger = LoggerFactory.getLogger(FileServiceImpl.class);
+
 	@Override
 	public Storage uploadImg(MultipartFile file) {
 
 		if (file.isEmpty()) {
+			logger.error("File upload failed: The file is empty.");
 			throw new UploadDownloadException(404, " Failed to upload file");
 		}
 
@@ -30,18 +35,26 @@ public class FileServiceImpl implements FileService {
 			f.setFile(file.getBytes());
 			f.setFileName(file.getOriginalFilename());
 			f.setFileType(file.getContentType());
-			return fileRepository.save(f);
+            logger.info("Uploading file with name: {}", file.getOriginalFilename());
+		
+            
+            logger.info("File uploaded successfully with ID: {}",f.getId() );
+            return fileRepository.save(f);
 		} catch (IOException e) {
-			throw new UploadDownloadException(500, "Please try again later" + "" + e.getMessage());
+            logger.error("Error occurred while uploading file: {}", e.getMessage());
+			throw new UploadDownloadException(404, "Please try again later" + "" + e.getMessage());
 		}
 	}
 
 	@Override
 	public Storage downloadImg(int id) {
+        logger.info("Attempting to download file with ID: {}", id);
 		Optional<Storage> file = fileRepository.findById(id);
 		if (file.isEmpty()) {
+            logger.error("File not found with ID: {}", id);
 			throw new UploadDownloadException(404, "File not found with ID: " + id);
 		}
+        logger.info("File with ID: {} found. Preparing for download.", id);
 		return file.get();
 	}
 
