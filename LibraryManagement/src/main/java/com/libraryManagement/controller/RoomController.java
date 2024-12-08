@@ -18,8 +18,8 @@ import com.libraryManagement.dto.RoomDto;
 import com.libraryManagement.entity.Room;
 import com.libraryManagement.service.RoomService;
 
+@CrossOrigin(origins ="*")
 @RestController
-	
 @RequestMapping("/room")
 public class RoomController {
 
