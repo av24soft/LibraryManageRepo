@@ -1,7 +1,7 @@
 package com.libraryManagement.controller;
 
 import java.util.List;
-
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -19,6 +19,7 @@ import com.libraryManagement.entity.Room;
 import com.libraryManagement.service.RoomService;
 
 @RestController
+	
 @RequestMapping("/room")
 public class RoomController {
 
@@ -30,6 +31,7 @@ public class RoomController {
 		return new ResponseEntity<Room>(roomServiceImpl.createRoom(roomDto), HttpStatus.CREATED);
 	}
 
+	@CrossOrigin(origins = "*")
 	@GetMapping
 	public ResponseEntity getAllRooms() {
 		List<Room> room = roomServiceImpl.getAllRoom();
