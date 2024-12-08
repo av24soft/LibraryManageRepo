@@ -31,7 +31,7 @@ public class RoomController {
 		return new ResponseEntity<Room>(roomServiceImpl.createRoom(roomDto), HttpStatus.CREATED);
 	}
 
-	@CrossOrigin(origins = "*")
+	@CrossOrigin(origins ="*")
 	@GetMapping
 	public ResponseEntity getAllRooms() {
 		List<Room> room = roomServiceImpl.getAllRoom();
